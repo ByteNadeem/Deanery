@@ -1,0 +1,65 @@
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.env
+.env.*
+env/
+.venv/
+venv/
+ENV/
+env.py
+
+# Django
+*.log
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+settings_local.py
+
+# VS Code
+.vscode/
+
+# Node.js / Frontend
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+build/
+dist/
+*.tgz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# Migrations
+**/migrations/*.pyc
+**/migrations/*.pyo
+**/migrations/*.pyd
+**/migrations/__pycache__/
+**/migrations/*.sqlite3
+
+# Others
+*.swp
+*.swo
+
+# Windows OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Python Windows environments
+Scripts/
