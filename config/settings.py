@@ -45,7 +45,6 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-import os
 
 if os.path.isfile("env.py"):
     import env
@@ -55,7 +54,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS =["deanery-11c659a713eb.herokuapp.com", '127.0.0.1'] 
+ALLOWED_HOSTS = ["deanery-11c659a713eb.herokuapp.com", '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com/']
 
