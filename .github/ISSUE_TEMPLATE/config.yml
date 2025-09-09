@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📋 Project Board Setup Guide
+    url: https://github.com/ByteNadeem/Deanery/blob/main/.github/PROJECT_BOARD_SETUP.md
+    about: Learn how to set up and use the Kanban project board with MoSCoW prioritization
+  - name: 🏷️ Label Management
+    url: https://github.com/ByteNadeem/Deanery/labels
+    about: Manage MoSCoW priority labels for the repository
+  - name: 📊 Project Boards
+    url: https://github.com/ByteNadeem/Deanery/projects
+    about: View and manage project boards for this repository
