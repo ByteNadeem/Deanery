@@ -2,31 +2,32 @@
 
 ## 🎯 ACCEPTANCE CRITERIA
 
-AS A **student**
-I WANT TO **view my course grades and GPA**
-SO THAT **I can track my academic progress and performance**
+AS A **user**
+I WANT TO **sign up to the newsletter**
+SO THAT **I can keep up-to-date with upcoming events**
 
 Additional acceptance criteria:
-- [ ] Display current semester grades for all enrolled courses
-- [ ] Show cumulative GPA calculation
-- [ ] Allow filtering by semester/academic year
-- [ ] Display grade breakdown (assignments, exams, participation)
+- [ ] Modal form appears when newsletter signup is triggered
+- [ ] Form collects email address and optional name
+- [ ] Validation ensures proper email format
+- [ ] Success message confirms subscription
 
 ## ✅ TASKS
 
-1. [ ] Create grade display component with responsive design
-2. [ ] Implement GPA calculation logic and database queries
-3. [ ] Add filtering functionality and data export options
+1. [ ] create modal signup form
+2. [ ] Implement form validation and security (e.g. CSRF) checks
+3. [ ] Return "Success" message and close modal
 
 ## 📋 MoSCoW Priority
 
-**MUST HAVE** - This is core functionality that students need to monitor their academic progress.
+**SHOULD HAVE** - This feature will help users stay informed about upcoming events and improve engagement.
 
 ## 📝 Additional Context
 
-This feature is essential for the Deanery system as it provides students with visibility into their academic performance. Should integrate with the existing course enrollment system and grade entry workflows used by faculty.
+This feature will enable users to subscribe to the newsletter to receive updates about upcoming events. The modal should be triggered from appropriate places in the UI such as the homepage or event pages.
 
 **Mockup/Design Notes:**
-- Use a clean table layout for grade display
-- Include visual indicators (colors) for grade ranges
-- Ensure mobile-responsive design for student access
+- Use a clean modal overlay design  
+- Include email validation with clear error messages
+- Ensure CSRF protection and other security measures
+- Provide clear success/failure feedback to users
