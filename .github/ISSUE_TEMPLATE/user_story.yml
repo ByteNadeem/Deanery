@@ -1,0 +1,80 @@
+name: 📖 User Story
+description: Create a user story following MoSCoW prioritization method
+title: "[USER STORY]: "
+labels: []
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to create a user story! Please fill out the sections below to help us understand the requirements.
+        
+        **Priority Labels**: Please add one of the following labels to categorize this story:
+        - `MUST HAVE` (green) - Critical functionality that is essential for the product
+        - `SHOULD HAVE` (yellow) - Important functionality that adds significant value
+        - `COULD HAVE` (orange) - Nice-to-have functionality that would be beneficial
+        - `WONT HAVE` (red) - Functionality that will not be implemented in this release
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: "🎯 ACCEPTANCE CRITERIA"
+      description: "Define the acceptance criteria using the traditional user story format"
+      placeholder: |
+        AS A _____________(ROLE)
+        I WANT TO _________________(ACTION)
+        SO THAT ______________(FUNCTION)
+        
+        Additional acceptance criteria:
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+        - [ ] Criterion 3
+      value: |
+        AS A _____________
+        I WANT TO _________________
+        SO THAT ______________
+        
+        Additional acceptance criteria:
+        - [ ] 
+        - [ ] 
+        - [ ] 
+    validations:
+      required: true
+
+  - type: textarea
+    id: tasks
+    attributes:
+      label: "✅ TASKS"
+      description: "List of tasks to complete for this user story"
+      placeholder: |
+        1. [ ] Task 1 description
+        2. [ ] Task 2 description  
+        3. [ ] Task 3 description
+      value: |
+        1. [ ] 
+        2. [ ] 
+        3. [ ] 
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: "📋 MoSCoW Priority"
+      description: "Select the priority level for this user story"
+      options:
+        - "MUST HAVE (Critical - Essential for product)"
+        - "SHOULD HAVE (Important - Significant value)"
+        - "COULD HAVE (Nice-to-have - Beneficial)"
+        - "WONT HAVE (Not in this release)"
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: "📝 Additional Context"
+      description: "Add any other context, screenshots, or information that would be helpful"
+      placeholder: "Any additional details, mockups, technical considerations, etc."
+    validations:
+      required: false
