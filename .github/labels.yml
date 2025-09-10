@@ -1,0 +1,15 @@
+- name: "MUST HAVE"
+  color: "0E8A16"
+  description: "Critical functionality that is essential for the product (MoSCoW: Must Have)"
+
+- name: "SHOULD HAVE"
+  color: "FBCA04"
+  description: "Important functionality that adds significant value (MoSCoW: Should Have)"
+
+- name: "COULD HAVE"
+  color: "F9D0C4"
+  description: "Nice-to-have functionality that would be beneficial (MoSCoW: Could Have)"
+
+- name: "WONT HAVE"
+  color: "D73A49"
+  description: "Functionality that will not be implemented in this release (MoSCoW: Won't Have)"

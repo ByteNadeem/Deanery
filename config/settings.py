@@ -70,8 +70,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'tailwind',
+<<<<<<< HEAD
     'theme',
+=======
+    'theme', 
+>>>>>>> main
 ]
+TAILWIND_APP_NAME = 'theme'
 
 TAILWIND_APP_NAME = 'theme'
 
@@ -167,3 +172,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ...existing code...
+NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
