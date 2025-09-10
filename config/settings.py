@@ -70,8 +70,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'tailwind',
+<<<<<<< HEAD
+    'theme',
+=======
     'theme', 
+>>>>>>> main
 ]
+TAILWIND_APP_NAME = 'theme'
+
 TAILWIND_APP_NAME = 'theme'
 
 MIDDLEWARE = [
