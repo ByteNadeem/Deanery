@@ -151,11 +151,16 @@ AUTH_PASSWORD_VALIDATORS = [
         ),
     },
     {
+<<<<<<< HEAD
         'NAME': (
             'django.contrib.auth.password_validation.'
             'NumericPasswordValidator'
         ),
     },
+=======
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+   },
+>>>>>>> main
 ]
 
 
