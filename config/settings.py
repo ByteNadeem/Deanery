@@ -6,18 +6,18 @@ import sys
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-DATABASE_URL = os.environ.get("DATABASE_URL")
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL)
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+# DATABASE_URL = os.environ.get("DATABASE_URL")
+# if DATABASE_URL:
+#     DATABASES = {
+#         'default': dj_database_url.parse(DATABASE_URL)
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
 
 """
 Django settings for config project.
@@ -52,7 +52,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["deanery-11c659a713eb.herokuapp.com", '127.0.0.1']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com/']
+CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com']
 
 
 # Application definition
@@ -151,16 +151,11 @@ AUTH_PASSWORD_VALIDATORS = [
         ),
     },
     {
-<<<<<<< HEAD
         'NAME': (
             'django.contrib.auth.password_validation.'
             'NumericPasswordValidator'
         ),
     },
-=======
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-   },
->>>>>>> main
 ]
 
 
