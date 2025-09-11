@@ -1,10 +1,11 @@
 from pathlib import Path
-# ...existing code...
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-# ...existing code...
+
 import os
 import dj_database_url
-# ...existing code...
+import sys
+
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 if DATABASE_URL:
@@ -18,7 +19,7 @@ else:
             'NAME': BASE_DIR / 'db.sqlite3',
         }
     }
-# ...existing code...
+
 """
 Django settings for config project.
 
@@ -30,10 +31,6 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
-from pathlib import Path
-import os
-import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -70,9 +67,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'tailwind',
-    'theme', 
+    'theme',
 ]
+
 TAILWIND_APP_NAME = 'theme'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -167,5 +166,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ...existing code...
-NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+if sys.platform == "win32":
+    NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
+else:
+    NPM_BIN_PATH = "/usr/local/bin/npm"

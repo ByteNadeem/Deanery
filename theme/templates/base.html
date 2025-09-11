@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" >
+    <link href="{% tailwind_css %}" rel="stylesheet">
     {% tailwind_css %}
 </head>
 
@@ -16,11 +18,12 @@
             <span>Hello from daisyUi 👋</span>
         </div>
     </div>
-
+    {% block content %}{% endblock %}
 <div class="container mx-auto">
     <section class="flex items-center justify-center h-screen">
         <h1 class="text-5xl">Django + Tailwind = ❤️</h1>
     </section>
 </div>
+{% block extra_js  %}{% endblock %}
 </body>
 </html>
