@@ -1,10 +1,9 @@
 from pathlib import Path
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 import os
 import dj_database_url
 import sys
+
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
@@ -70,6 +69,11 @@ INSTALLED_APPS = [
     'theme',
 ]
 
+if DEBUG:
+    # Add only in DEV / DEBUG mode
+    INSTALLED_APPS += ['django_browser_reload']
+
+
 TAILWIND_APP_NAME = 'theme'
 
 
@@ -83,6 +87,12 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+if DEBUG:
+    # Add django_browser_reload middleware only in DEBUG mode
+    MIDDLEWARE += [
+        "django_browser_reload.middleware.BrowserReloadMiddleware",
+    ]
 
 ROOT_URLCONF = 'config.urls'
 
@@ -123,16 +133,28 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'UserAttributeSimilarityValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'MinimumLengthValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'CommonPasswordValidator'
+        ),
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'NumericPasswordValidator'
+        ),
     },
 ]
 
