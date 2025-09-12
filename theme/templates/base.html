@@ -1,29 +1,60 @@
-{% load static tailwind_tags %}
+{% load static %}
+{% load tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Django Tailwind</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" >
     <link href="{% tailwind_css %}" rel="stylesheet">
-    {% tailwind_css %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
-<body class="bg-gray-50 text-black font-serif leading-normal tracking-normal">
-
-    <div class="toast toast-top toast-end">
-        <div class="alert alert-info">
-            <span>Hello from daisyUi 👋</span>
+<body class="flex flex-col min-h-screen">
+    <!-- Fixed Navbar -->
+    <nav class="navbar fixed top-0 left-0 w-full bg-neutral text-neutral-content px-4 z-50">
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl" href="#">logo</a>
         </div>
-    </div>
-    {% block content %}{% endblock %}
-<div class="container mx-auto">
-    <section class="flex items-center justify-center h-screen">
-        <h1 class="text-5xl">Django + Tailwind = ❤️</h1>
-    </section>
-</div>
-{% block extra_js  %}{% endblock %}
+        <div class="flex-none">
+            <div class="hidden md:flex gap-2">
+                <a class="btn btn-ghost" href="#">Home</a>
+                <a class="btn btn-ghost" href="#">About</a>
+                <a class="btn btn-ghost" href="#">Contact</a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 pt-16 pb-20">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Fixed Footer -->
+    <footer
+        class="fixed bottom-0 left-0 w-full bg-neutral text-neutral-content items-center p-4 sm:footer-horizontal z-50">
+        <aside class="grid-flow-col items-center">
+            <p>Copyright © {% now 'Y' %} - All rights reserved</p>
+        </aside>
+        <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
+            <a href="#" aria-label="Facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" aria-label="YouTube">
+                <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" aria-label="Twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </nav>
+    </footer>
+    {% block extra_js %}{% endblock %}
+    <!-- Font Awesome CDN for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
+        crossorigin="anonymous"></script>
 </body>
+
 </html>
