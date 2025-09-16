@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>MAP HOME</h1>
-<div id='map' style='height: 400px; wisth: 100%;'>
+<div id='map' style='height: 400px; width: 100%;'>
     <!-- map renders here-->
 </div>
 {% endblock %}
+{% block 'extra_js' %}
+<script>
+    function initMap(){
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: , lng:},
+            zoom: 10
+        });
+    }
+</script>
+<script async defer src='https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap'>
+</script>
+{% endblock  %}
