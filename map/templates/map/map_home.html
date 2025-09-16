@@ -5,10 +5,10 @@
     <!-- map renders here-->
 </div>
 {% endblock %}
-{% block 'extra_js' %}
+{% block extra_js %}
 <script>
     // Parse locations
-    const locations = JSON.parse('{{ locations_json|escapejs }}')
+    const locations = JSON.parse('{{ locations_json|escapejs }}');
     
     function initMap(){
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -17,7 +17,7 @@
         });
 
         // Add markers for every church
-        locations.forEach(function(loc)) {
+        locations.forEach(function(loc) {
             if (loc.lat && loc.lng) {
                 new google.maps.Marker({
                     position: {lat: loc.lat, lng: loc.lng},
@@ -25,7 +25,7 @@
                     title: loc.Name
                 });
             }
-        }
+        });
     }
 </script>
 <script async defer src='https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap'>
