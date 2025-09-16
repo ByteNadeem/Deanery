@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'home',
     'tailwind',
     'theme',
+    'map',
 ]
 
 if DEBUG:
