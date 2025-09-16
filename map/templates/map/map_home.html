@@ -7,11 +7,25 @@
 {% endblock %}
 {% block 'extra_js' %}
 <script>
+    // Parse locations
+    const locations = JSON.parse('{{ locations_json|escapejs }}')
+    
     function initMap(){
         var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: , lng:},
+            center: {lat: 50.814666928947304, lng: -3.874065782502786},
             zoom: 10
         });
+
+        // Add markers for every church
+        locations.forEach(function(loc)) {
+            if (loc.lat && loc.lng) {
+                new google.maps.Marker({
+                    position: {lat: loc.lat, lng: loc.lng},
+                    map: map,
+                    title: loc.Name
+                });
+            }
+        }
     }
 </script>
 <script async defer src='https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap'>
