@@ -13,7 +13,11 @@ if os.path.isfile("env.py"):
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = True
-ALLOWED_HOSTS = ["deanery-11c659a713eb.herokuapp.com", '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    "deanery-11c659a713eb.herokuapp.com",
+    "127.0.0.1",
+    "localhost",
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://*.herokuapp.com',
@@ -88,10 +92,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'UserAttributeSimilarityValidator'
+        )
+    },
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'CommonPasswordValidator'
+        )
+    },
+    {
+        'NAME': (
+            'django.contrib.auth.password_validation.'
+            'NumericPasswordValidator'
+        )
+    },
 ]
 
 LANGUAGE_CODE = 'en-us'
@@ -110,3 +129,5 @@ if sys.platform == "win32":
     NPM_BIN_PATH = "C:/Program Files/nodejs/npm.cmd"
 else:
     NPM_BIN_PATH = "/usr/local/bin/npm"
+
+GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")

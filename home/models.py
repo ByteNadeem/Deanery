@@ -15,4 +15,3 @@ class Profile(models.Model):
     @property
     def _is_staff(self):
         return self.is_staff or self.user.is_staff
-
