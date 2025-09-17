@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>MAP HOME</h1>
-<div id='map' style='height: 400px; width: 100%;'>
+<div id='map' style='color:#000000; height: 60vh; width: 100%;'>
     <!-- map renders here-->
 </div>
 {% endblock %}
 {% block extra_js %}
 <script>
-// Define initMap globally before loading the API
 function initMap() {
-    // Parse locations with error handling
     let locations = [];
     try {
         locations = JSON.parse('{{ locations_json|escapejs }}');
@@ -17,26 +15,75 @@ function initMap() {
         console.error('Error parsing locations JSON:', error);
         locations = [];
     }
-    
-    var map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 50.214, lng: -5.302}, // Centered on Camborne area
-        zoom: 12
+
+    const map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 50.214, lng: -5.302},
+        zoom: 10
     });
 
-    // Add markers for every church with validation
-    locations.forEach(function(loc) {
-        // Check if coordinates are valid numbers (not NaN or null)
-        if (loc.lat && loc.lng && 
-            typeof loc.lat === 'number' && typeof loc.lng === 'number' &&
-            !isNaN(loc.lat) && !isNaN(loc.lng)) {
-            new google.maps.Marker({
-                position: {lat: loc.lat, lng: loc.lng},
-                map: map,
-                title: loc.Name || 'Unknown Location'
-            });
-        }
-    });
+    // Create a shared info window
+    const infoWindow = new google.maps.InfoWindow();
+
+    // Create the markers using AdvancedMarkerElement if available
+    if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
+        const { AdvancedMarkerElement, PinElement } = google.maps.marker;
+
+        locations.forEach((loc, i) => {
+            if (
+                loc.lat && loc.lng &&
+                typeof loc.lat === 'number' && typeof loc.lng === 'number' &&
+                !isNaN(loc.lat) && !isNaN(loc.lng)
+            ) {
+                const position = { lat: loc.lat, lng: loc.lng };
+                const title = loc.Name || 'Unknown Location';
+                const pin = new PinElement({
+                    glyphColor: '#000000',
+                    // background: '#FEFEFF',
+                    scale: 0.5,
+                });
+                const marker = new AdvancedMarkerElement({
+                    position,
+                    map,
+                    title: title,
+                    content: pin.element,
+                    gmpClickable: true,
+                });
+                marker.addListener('click', ({ domEvent, latLng }) => {
+                    infoWindow.close();
+                    infoWindow.setContent(
+                        `<strong>${title}</strong><br>
+                            ${loc.Location || ''}<br>
+                            ${loc.Postcode || ''}`
+                    );
+                    infoWindow.open(map, marker);
+                });
+            }
+        });
+    } else {
+        // Fallback to classic markers if AdvancedMarkerElement is not available
+        locations.forEach((loc, i) => {
+            if (
+                loc.lat && loc.lng &&
+                typeof loc.lat === 'number' && typeof loc.lng === 'number' &&
+                !isNaN(loc.lat) && !isNaN(loc.lng)
+            ) {
+                const position = { lat: loc.lat, lng: loc.lng };
+                const title = loc.Name || 'Unknown Location';
+                const marker = new google.maps.Marker({
+                    position,
+                    map,
+                    title: `${i + 1}. ${title}`,
+                    // label: `${i + 1}`,
+                });
+                marker.addListener('click', () => {
+                    infoWindow.close();
+                    infoWindow.setContent(`<strong>${title}</strong><br>${loc.Location || ''}<br>${loc.Postcode || ''}`);
+                    infoWindow.open(map, marker);
+                });
+            }
+        });
+    }
 }
 </script>
-<script src='https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap&loading=async' defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap&loading=async" defer></script>
 {% endblock %}
