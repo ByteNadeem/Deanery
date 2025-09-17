@@ -55,6 +55,7 @@ coverage.xml
 # Others
 *.swp
 *.swo
+*.csv
 
 # Windows OS files
 Thumbs.db

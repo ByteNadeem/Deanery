@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>MAP HOME</h1>
+<div id='map' style='height: 400px; width: 100%;'>
+    <!-- map renders here-->
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+(function() {
+    // Parse locations
+    const locations = JSON.parse('{{ locations_json|escapejs }}');
+    
+    window.initMap = function() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 50.814666928947304, lng: -3.874065782502786},
+            zoom: 10
+        });
+
+        // Add markers for every church
+        locations.forEach(function(loc) {
+            if (loc.lat && loc.lng) {
+                new google.maps.Marker({
+                    position: {lat: loc.lat, lng: loc.lng},
+                    map: map,
+                    title: loc.Name
+                });
+            }
+        });
+    }
+})();   
+</script>
+<script async defer src='https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap'>
+</script>
+{% endblock  %}

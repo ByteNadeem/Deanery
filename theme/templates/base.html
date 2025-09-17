@@ -2,7 +2,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>Django Tailwind</title>
     <meta charset="UTF-8">
@@ -10,11 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {% tailwind_css %}
     <link rel="stylesheet" href="{% static 'css/dist/styles.css' %}">
-
 </head>
-
 <body class="min-h-screen flex flex-col">
-
     <!-- Fixed Header/Navbar -->
     <header class="fixed top-0 left-0 w-full bg-white shadow z-50 flex items-center justify-between px-6"
         style="height: 4rem;">
@@ -23,6 +19,7 @@
         <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Home</a>
         <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">About</a>
         <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Contact</a>
+        <a href="{% url 'map_home' %}" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Map</a>
     </nav>
     </header>
 
@@ -44,8 +41,7 @@
 
     {% block extra_js %}{% endblock %}
     <!-- Font Awesome CDN for icons -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
-        crossorigin="anonymous"></script>
+    {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
+        crossorigin="anonymous"></script> {% endcomment %}
 </body>
-
 </html>
