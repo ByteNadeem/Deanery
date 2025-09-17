@@ -7,29 +7,36 @@
 {% endblock %}
 {% block extra_js %}
 <script>
-(function() {
-    // Parse locations
-    const locations = JSON.parse('{{ locations_json|escapejs }}');
-    
-    window.initMap = function() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 50.814666928947304, lng: -3.874065782502786},
-            zoom: 10
-        });
-
-        // Add markers for every church
-        locations.forEach(function(loc) {
-            if (loc.lat && loc.lng) {
-                new google.maps.Marker({
-                    position: {lat: loc.lat, lng: loc.lng},
-                    map: map,
-                    title: loc.Name
-                });
-            }
-        });
+// Define initMap globally before loading the API
+function initMap() {
+    // Parse locations with error handling
+    let locations = [];
+    try {
+        locations = JSON.parse('{{ locations_json|escapejs }}');
+    } catch (error) {
+        console.error('Error parsing locations JSON:', error);
+        locations = [];
     }
-})();   
+    
+    var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 50.214, lng: -5.302}, // Centered on Camborne area
+        zoom: 12
+    });
+
+    // Add markers for every church with validation
+    locations.forEach(function(loc) {
+        // Check if coordinates are valid numbers (not NaN or null)
+        if (loc.lat && loc.lng && 
+            typeof loc.lat === 'number' && typeof loc.lng === 'number' &&
+            !isNaN(loc.lat) && !isNaN(loc.lng)) {
+            new google.maps.Marker({
+                position: {lat: loc.lat, lng: loc.lng},
+                map: map,
+                title: loc.Name || 'Unknown Location'
+            });
+        }
+    });
+}
 </script>
-<script async defer src='https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap'>
-</script>
-{% endblock  %}
+<script src='https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap&loading=async' defer></script>
+{% endblock %}
