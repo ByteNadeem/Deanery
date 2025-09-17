@@ -24,7 +24,7 @@ def geocode_address(address, api_key):
 def map_home(request):
     # Use proper path resolution
     csv_path = os.path.join(settings.BASE_DIR, 'docs', 'NorthCarnmarthDeaneryLocations.csv')
-    
+
     try:
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
@@ -32,7 +32,7 @@ def map_home(request):
             'google_maps_api_key': settings.GOOGLE_MAPS_API_KEY,
             'locations_json': json.dumps([])
         })
-    
+
     api_key = settings.GOOGLE_MAPS_API_KEY
 
     # Filter valid locations and convert to list
@@ -42,7 +42,7 @@ def map_home(request):
             # Use Latitude/Longitude columns (which have data) instead of lat/lng
             lat = float(row['Latitude']) if not pd.isna(row['Latitude']) else None
             lng = float(row['Longitude']) if not pd.isna(row['Longitude']) else None
-            
+
             if lat and lng:  # Only include valid coordinates
                 locations.append({
                     'Name': str(row['Name']),
