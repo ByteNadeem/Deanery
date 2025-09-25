@@ -131,3 +131,6 @@ else:
     NPM_BIN_PATH = "/usr/local/bin/npm"
 
 GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'noreply@ncd.com'
