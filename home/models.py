@@ -22,36 +22,34 @@ class Profile(models.Model):
 
 # NewsletterSubscription model
 
-class NewsletterSubscription(models.Model):
+class NewsletterSubscriber(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
-    first_name = models.CharField(max_length=50)
+    first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
 
-    #  Status of subscription
+    # Subscription status
     is_confirmed = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    #  GDPR compliance fields
+    # GDPR compliance
     consent_given = models.BooleanField(default=False)
     consent_timestamp = models.DateTimeField(null=True, blank=True)
     consent_ip_address = models.GenericIPAddressField(null=True, blank=True)
 
-    #  Timestamps
+    # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
     confirmed_at = models.DateTimeField(null=True, blank=True)
     unsubscribed_at = models.DateTimeField(null=True, blank=True)
 
-    #  Confirmation token
+    # Confirmation token
     confirmation_token = models.UUIDField(default=uuid.uuid4, unique=True)
 
     class Meta:
         ordering = ['-created_at']
 
     def __str__(self):
-        return f'{self.email} - {
-            "Confirmed" if self.is_confirmed else "Unconfirmed"
-            } - {"Active" if self.is_active else "Inactive"}'
+        return f"{self.email} - {'Confirmed' if self.is_confirmed else 'Pending'}"
 
     def get_full_name(self):
-        return f'{self.first_name} {self.last_name}'.strip()
+        return f"{self.first_name} {self.last_name}".strip()

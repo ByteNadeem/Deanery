@@ -1,11 +1,11 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import NewsletterSubscription
+from .models import NewsletterSubscriber
 
 #  Newsletter Signup form here
 
 
-class NewsLetterSignupForm(forms.ModelForm):
+class NewsletterSignupForm(forms.ModelForm):
     consent = forms.BooleanField(
         required=True,
         error_messages={
@@ -14,7 +14,7 @@ class NewsLetterSignupForm(forms.ModelForm):
     )
 
     class Meta:
-        model = NewsletterSubscription
+        model = NewsletterSubscriber
         fields = ['email', 'first_name', 'last_name']
         widgets = {
             'first_name': forms.TextInput(attrs={
@@ -33,7 +33,7 @@ class NewsLetterSignupForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if NewsletterSubscription.objects.filter(
+        if NewsletterSubscriber.objects.filter(
             email=email, is_active=True
         ).exists():
             raise ValidationError(

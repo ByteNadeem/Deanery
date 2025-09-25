@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('map/', include('map.urls')),
     path('', include('home.urls')),
+    path('newsletter/', include('home.urls')),
 ]
 
 if settings.DEBUG:

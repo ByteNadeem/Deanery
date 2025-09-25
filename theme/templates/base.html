@@ -33,13 +33,117 @@
         style="height: 10rem;">
         <p class="m-0">Copyright © {% now 'Y' %} - All rights reserved</p>
         <nav class="flex gap-4">
-            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <div>
+                <button class="btn" onclick="newsletter_modal.showModal()">Subscribe to our Newsletter</button>
+                <dialog id="newsletter_modal" class="modal modal-bottom sm:modal-middle">
+                    <div class="modal-box">
+                        <form method="dialog">
+                            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                        </form>
+                        <h3 class="text-lg font-bold mb-4">📧 Stay Updated!</h3>
+                        <p class="py-4">Get the latest news, events, and updates from our deanery delivered to your inbox.</p>
+                        <form method="post" action="{% url 'newsletter_signup' %}" id="newsletter-form">
+                            {% csrf_token %}
+                            <div class="form-control mb-4">
+                                <label class="label">
+                                    <span class="label-text">First Name *</span>
+                                </label>
+                                <input type="text" name="first_name" placeholder="First Name" class="input input-bordered w-full" required>
+                            </div>
+                            <div class="form-control mb-4">
+                                <label class="label">
+                                    <span class="label-text">Last Name *</span>
+                                </label>
+                                <input type="text" name="last_name" placeholder="Last Name" class="input input-bordered w-full" required>
+                            </div>
+                            <div class="form-control mb-4">
+                                <label class="label">
+                                    <span class="label-text">Email Address *</span>
+                                </label>
+                                <input type="email" name="email" placeholder="your.email@example.com" class="input input-bordered w-full" required>
+                            </div>
+                        <!-- GDPR Consent here -->
+                            <div class="form-control mb-6">
+                                <label class="label cursor-pointer justify-start gap-3"></label>
+                                <input type="checkbox" class="checkbox checkbox-primary" name="consent">
+                                <span class="label-text text-sm">
+                                    I Consent to receive newsletter emails and understand I can unsubscribe at any time.
+                                </span>
+                                <a href="#" class="link">Privacy Policy</a>
+                            </div>
+                            <!-- Anti-bot honeypot here -->
+                            <div style="diplay:none;">
+                                <input type="text" name="website" tabindex="-1" autocomplete="off">
+                            </div>
+                        </form>
+                            <div class="modal-action">
+                                <button type="button" class="btn" onclick="newsletter_modal.close()">Cancel Here</button>
+                                <button type="submit" class="btn btn-primary">Subscribe Here</button>
+                            </div>
+                        <!-- Success/Error Message here -->
+                        <div id="form-messages" class="mt-4"></div>
+                    </div>       
+                </dialog>
+            </div>
+            <div>
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
         </nav>
     </footer>
 
     {% block extra_js %}{% endblock %}
+    <!-- Newsletter Form script here -->
+    <script>
+        document.getElementById('newsletter-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const messageDiv = document.getElementById('form-messages');
+            
+            // Basic anti-bot check
+            if (formData.get('website')) {
+                return; // Bot detected
+            }
+            
+            try {
+                const response = await fetch('{% url "newsletter_signup" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <span> ${data.message}</span>
+                        </div>
+                    `;
+                    this.reset();
+                    setTimeout(() => {
+                        newsletter_modal.close();
+                    }, 2000);
+                } else {
+                    messageDiv.innerHTML = `
+                        <div class="alert alert-error">
+                            <span> ${data.message}</span>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                messageDiv.innerHTML = `
+                    <div class="alert alert-error">
+                        <span> Something went wrong. Please try again.</span>
+                    </div>
+                `;
+            }
+        });
+    </script>
     <!-- Font Awesome CDN for icons -->
     {% comment %} <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js"
         crossorigin="anonymous"></script> {% endcomment %}
