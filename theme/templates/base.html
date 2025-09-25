@@ -34,55 +34,57 @@
         <p class="m-0">Copyright © {% now 'Y' %} - All rights reserved</p>
         <nav class="flex gap-4">
             <div>
+                <!-- Button to open modal -->
                 <button class="btn" onclick="newsletter_modal.showModal()">Subscribe to our Newsletter</button>
-                <dialog id="newsletter_modal" class="modal modal-bottom sm:modal-middle">
-                    <div class="modal-box">
+
+                <!-- Modal -->
+                <dialog id="newsletter_modal" class="modal modal-middle">
+                    <div class="modal-box h-full max-w-lg">
                         <form method="dialog">
                             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                         </form>
                         <h3 class="text-lg font-bold mb-4">📧 Stay Updated!</h3>
                         <p class="py-4">Get the latest news, events, and updates from our deanery delivered to your inbox.</p>
-                        <form method="post" action="{% url 'newsletter_signup' %}" id="newsletter-form">
+                        <form method="post" action="{% url 'newsletter_signup' %}" id="newsletter-form" class="space-y-4">
                             {% csrf_token %}
-                            <div class="form-control mb-4">
-                                <label class="label">
+                            <div>
+                                <label class="label" for="first_name">
                                     <span class="label-text">First Name *</span>
                                 </label>
                                 <input type="text" name="first_name" placeholder="First Name" class="input input-bordered w-full" required>
                             </div>
-                            <div class="form-control mb-4">
-                                <label class="label">
+                            <div>
+                                <label class="label" for="last_name">
                                     <span class="label-text">Last Name *</span>
                                 </label>
                                 <input type="text" name="last_name" placeholder="Last Name" class="input input-bordered w-full" required>
                             </div>
-                            <div class="form-control mb-4">
-                                <label class="label">
+                            <div>
+                                <label class="label" for="email">
                                     <span class="label-text">Email Address *</span>
                                 </label>
                                 <input type="email" name="email" placeholder="your.email@example.com" class="input input-bordered w-full" required>
                             </div>
-                        <!-- GDPR Consent here -->
-                            <div class="form-control mb-6">
-                                <label class="label cursor-pointer justify-start gap-3"></label>
-                                <input type="checkbox" class="checkbox checkbox-primary" name="consent">
-                                <span class="label-text text-sm">
-                                    I Consent to receive newsletter emails and understand I can unsubscribe at any time.
-                                </span>
-                                <a href="#" class="link">Privacy Policy</a>
+                            <div>
+                                <label class="cursor-pointer flex items-center gap-2" for="consent">
+                                    <input type="checkbox" class="checkbox checkbox-primary" name="consent" required>
+                                    <span class="label-text text-sm">
+                                        I consent to receive newsletter emails and understand I can unsubscribe at any time.
+                                        <a href="#" class="link">Privacy Policy</a>
+                                    </span>
+                                </label>
                             </div>
-                            <!-- Anti-bot honeypot here -->
-                            <div style="diplay:none;">
+                            <!-- Anti-bot honeypot -->
+                            <div style="display:none;">
                                 <input type="text" name="website" tabindex="-1" autocomplete="off">
                             </div>
-                        </form>
-                            <div class="modal-action">
-                                <button type="button" class="btn" onclick="newsletter_modal.close()">Cancel Here</button>
-                                <button type="submit" class="btn btn-primary">Subscribe Here</button>
+                            <div class="modal-action mb-auto">
+                                <button type="button" class="btn btn-outline outline outline-1 outline-red" onclick="newsletter_modal.close()">Cancel</button>
+                                <button type="submit" class="btn btn-primary outline outline-1">Subscribe</button>
                             </div>
-                        <!-- Success/Error Message here -->
+                        </form>
                         <div id="form-messages" class="mt-4"></div>
-                    </div>       
+                    </div>
                 </dialog>
             </div>
             <div>
@@ -142,6 +144,10 @@
                     </div>
                 `;
             }
+        });
+
+        document.getElementById('newsletter_modal').addEventListener('shown', function() {
+            document.querySelector('#newsletter-form input[name="first_name"]').focus();
         });
     </script>
     <!-- Font Awesome CDN for icons -->
