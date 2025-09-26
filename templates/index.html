@@ -1,18 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<section class="hero min-h-screen bg-base-200 max-h-[40vh]">
-  <div class="hero-content text-center">
-    <div class="max-w-lg flex flex-col items-center">
-      <img src="{% static 'css/images/deanery_logo.png' %}" alt="Carnmarth North Deanery Logo" class="w-40 h-40 mb-4" />
-      <h1 class="text-5xl font-bold">Welcome North Carmargh Deanery</h1>
-      <p class="py-6">
-        Explore our vibrant community across regions. Stay updated—subscribe to our newsletter.
-      </p>
-      <button for="newsletter-modal" class="btn btn-primary btn-lg" onclick="newsletter_modal.showModal()">
-        Subscribe Now
-      </button>
-    </div>
-  </div>
+<section class="hero h-screen bg-gradient-to-br from-green-500 to-blue-500 -mt-20 pt-20">
 </section>
 {% endblock %}
