@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Deanery Project</title>
+    <title>Deanery Project3 </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -13,13 +13,16 @@
 <body class="min-h-screen flex flex-col">
     <!-- Fixed Header/Navbar -->
     <header class="fixed top-0 left-0 w-full bg-white shadow z-50 flex items-center justify-between px-6"
-        style="height: 4rem;">
+        style="height: 5rem;">
         <nav class="flex gap-6">
+            <a href="/" class="bg-neutral rounded-lg px-4 py-2 shadow hover:bg-primary hover:text-white transition-colors max-h-[40px] max-w-[40px]"><img src="{% static '/css/images/deanery_logo_crop.png' %}" alt="Deanery Logo" class="h-10 w-10" /></a>
+        </nav>
+        <nav class="flex gap-4">
             <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Home</a>
-        <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">About</a>
-        <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Contact</a>
-        <a href="{% url 'map_home' %}" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Map</a>
-    </nav>
+            <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">About</a>
+            <a href="#" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Contact</a>
+            <a href="{% url 'map_home' %}" class="text-base font-medium text-neutral hover:text-primary bg-gray-100 rounded px-3 py-2 transition-colors hover:bg-primary hover:text-white">Map</a>
+        </nav>
     </header>
 
     <!-- Main Content -->
