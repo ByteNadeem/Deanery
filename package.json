@@ -8,8 +8,8 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "./node_modules/.bin/tailwindcss -i ./theme/static_src/src/input.css -o ./theme/static/css/dist/styles.css",
-        "watch": "./node_modules/.bin/tailwindcss -i ./theme/static_src/src/input.css -o ./theme/static/css/dist/styles.css --watch"
+        "build": "./node_modules/.bin/tailwindcss -i ./theme/static_src/src/input.css -o ./theme/static/css/dist/output.css",
+        "watch": "./node_modules/.bin/tailwindcss -i ./theme/static_src/src/input.css -o ./theme/static/css/dist/output.css --watch"
     },
     "repository": {
         "type": "git",
@@ -28,5 +28,17 @@
         "daisyui": "^5.1.23",
         "postcss": "^8.5.6",
         "tailwindcss": "^4.1.13"
+    },
+    "devDependencies": {
+        "tailwindcss": "^4.1.14",
+        "postcss": "^8.5.6",
+        "postcss-cli": "^11.0.1",
+        "autoprefixer": "^10.4.21",
+        "daisyui": "^5.1.29",
+        "cross-env": "^7.0.3",
+        "rimraf": "^6.0.1",
+        "@tailwindcss/forms": "^0.5.10",
+        "postcss-nested": "^7.0.2",
+        "postcss-simple-vars": "^7.0.1"
     }
 }

@@ -1,0 +1,45 @@
+# Variables
+PYTHON=python
+MANAGE=$(PYTHON) manage.py
+TAILWIND=$(MANAGE) tailwind
+NPM=npm
+DJANGO_PORT?=8000
+
+.PHONY: help runserver migrate makemigrations collectstatic tailwind-dev tailwind-build npm-install clean
+
+help:
+    @echo "Common commands:"
+    @echo "  make runserver      # Start Django dev server"
+    @echo "  make migrate        # Apply database migrations"
+    @echo "  make makemigrations # Create new migrations"
+    @echo "  make collectstatic  # Collect static files"
+    @echo "  make tailwind-dev   # Run Tailwind watcher with Django"
+    @echo "  make tailwind-build # Build Tailwind CSS once"
+    @echo "  make npm-install    # Install npm dependencies"
+    @echo "  make clean          # Remove pycache and static build files"
+
+runserver:
+    $(MANAGE) runserver $(DJANGO_PORT)
+
+migrate:
+    $(MANAGE) migrate
+
+makemigrations:
+    $(MANAGE) makemigrations
+
+collectstatic:
+    $(MANAGE) collectstatic --noinput
+
+tailwind-dev:
+    $(TAILWIND) dev
+
+tailwind-build:
+    $(TAILWIND) build
+
+npm-install:
+    cd theme/static_src && $(NPM) install
+
+clean:
+    find . -name "*.pyc" -delete
+    find . -name "__pycache__" -type d -exec rm -rf {} +
+    rm -rf theme/static/css/dist/*
