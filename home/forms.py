@@ -1,7 +1,9 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from .models import NewsletterSubscriber
-
+from config import settings
+from django.views.generic.edit import FormView
+from django.core.mail import send_mail
 #  Newsletter Signup form here
 
 
@@ -40,3 +42,12 @@ class NewsletterSignupForm(forms.ModelForm):
                 'This email is already subscribed to the newsletter.'
                 )
         return email
+
+
+class ContactForm(forms.Form):
+    """Display contact information"""
+    name = forms.CharField(max_length=100, required=True)
+    email = forms.EmailField(required=True)
+    message = forms.CharField(
+        widget=forms.Textarea, required=True, max_length=2000
+    )
