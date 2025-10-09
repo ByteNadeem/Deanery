@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6 text-center">Contact Your Church</h1>
+    <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+    >
+        {% for church in churches %}
+        <div
+            class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-200"
+        >
+            <div class="card-body">
+                <h2 class="card-title text-xl font-semibold">
+                    {{ church.name }}
+                </h2>
+                <p class="text-base text-gray-600">{{ church.address }}</p>
+                <p class="text-sm text-gray-500">{{ church.contact }}</p>
+                {% if church.image %}
+                <img
+                    src="{{ church.image.url }}"
+                    alt="{{ church.name }}"
+                    class="w-full h-32 object-cover rounded mt-4"
+                />
+                {% endif %}
+                <div class="card-actions mt-4">
+                    <a
+                        href="{{ church.website }}"
+                        class="btn btn-primary btn-sm"
+                        target="_blank"
+                        >Visit Website</a
+                    >
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
