@@ -7,4 +7,5 @@ urlpatterns = [
     path('confirm/<uuid:token>/', views.newsletter_confirm, name='newsletter_confirm'),
     path('unsubscribe/<uuid:token>/', views.newsletter_unsubscribe, name='newsletter_unsubscribe'),
     path('churches/', views.ChurchListView.as_view(), name='church_list'),
+    path('contact/', views.ContactView.as_view(), name='contact'),
 ]

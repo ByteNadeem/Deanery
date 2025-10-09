@@ -8,10 +8,10 @@ from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_protect
 from django.urls import reverse
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, FormView
 # from requests import request
 from .models import NewsletterSubscriber
-from .forms import NewsletterSignupForm
+from .forms import NewsletterSignupForm, ContactForm
 
 
 class HomePage(TemplateView):
@@ -52,7 +52,7 @@ def newsletter_signup(request):
         send_confirmation_email(request, subscriber)
 
         return JsonResponse({
-            'success': True, 
+            'success': True,
             'message': 'Thank you! Please check your email to confirm your subscription.'
         })
     else:
@@ -95,6 +95,7 @@ def send_confirmation_email(request, subscriber):
         [subscriber.email],
         fail_silently=False,
     )
+
 
 def newsletter_confirm(request, token):
     """Confirm newsletter subscription"""
@@ -157,3 +158,27 @@ class ChurchListView(TemplateView):
 
         context['churches'] = churches
         return context
+
+
+class ContactView(FormView):
+    template_name = 'home/contact.html'
+    form_class = ContactForm
+    success_url = '/contact/'
+
+    def form_valid(self, form):
+        # Process the form data here (e.g., send an email)
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        message = form.cleaned_data['message']
+
+        # send email
+        send_mail(
+            subject=f"Contact Form Submission from: {form.cleaned_data['name']}",
+            message=form.cleaned_data['message'],
+            from_email=form.cleaned_data['email'],
+            recipient_list=[settings.DEFAULT_FROM_EMAIL],
+        )
+
+        print("contact form submitted:", form.cleaned_data)  # Remove me before production
+
+        return super().form_valid(form)
