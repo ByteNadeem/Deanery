@@ -37,7 +37,10 @@ def get_client_ip(request):
 def newsletter_signup(request):
     # Anti-bot check
     if request.POST.get('website'):  # Honeypot field
-        return JsonResponse({'success': False, 'message': 'Invalid submission'})
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid submission'
+        })
 
     form = NewsletterSignupForm(request.POST)
 
@@ -53,7 +56,10 @@ def newsletter_signup(request):
 
         return JsonResponse({
             'success': True,
-            'message': 'Thank you! Please check your email to confirm your subscription.'
+            'message': (
+                'Thank you! Please check your email to confirm your '
+                'subscription.'
+            )
         })
     else:
         errors = []
@@ -62,7 +68,7 @@ def newsletter_signup(request):
                 errors.append(f"{field}: {error}")
 
         return JsonResponse({
-            'success': False, 
+            'success': False,
             'message': ' '.join(errors)
         })
 
@@ -74,19 +80,15 @@ def send_confirmation_email(request, subscriber):
     )
 
     subject = 'Confirm your newsletter subscription'
-    message = f"""
-    Hello {subscriber.get_full_name()},
-
-    Thank you for subscribing to our newsletter!
-
-    Please click the link below to confirm your subscription:
-    {confirmation_url}
-
-    If you didn't sign up for this newsletter, you can safely ignore this email.
-
-    Best regards,
-    The Deanery Team
-    """
+    message = (
+        f"Hello {subscriber.get_full_name()},\n\n"
+        "Thank you for subscribing to our newsletter!\n\n"
+        "Please click the link below to confirm your subscription:\n"
+        f"{confirmation_url}\n\n"
+        "If you didn't sign up for this newsletter, you can safely ignore this email.\n\n"
+        "Best regards,\n"
+        "The Deanery Team"
+    )
 
     send_mail(
         subject,
@@ -99,14 +101,19 @@ def send_confirmation_email(request, subscriber):
 
 def newsletter_confirm(request, token):
     """Confirm newsletter subscription"""
-    subscriber = get_object_or_404(NewsletterSubscriber, confirmation_token=token)
+    subscriber = get_object_or_404(
+        NewsletterSubscriber, confirmation_token=token
+    )
 
     if not subscriber.is_confirmed:
         subscriber.is_confirmed = True
         subscriber.confirmed_at = timezone.now()
         subscriber.save()
 
-        message = "Your subscription has been confirmed! Thank you for joining our newsletter."
+        message = (
+            "Your subscription has been confirmed! "
+            "Thank you for joining our newsletter."
+        )
     else:
         message = "Your subscription was already confirmed."
 
@@ -118,7 +125,10 @@ def newsletter_confirm(request, token):
 
 def newsletter_unsubscribe(request, token):
     """Unsubscribe from newsletter"""
-    subscriber = get_object_or_404(NewsletterSubscriber, confirmation_token=token)
+    subscriber = get_object_or_404(
+        NewsletterSubscriber,
+        confirmation_token=token
+    )
 
     if request.method == 'POST':
         subscriber.is_active = False
@@ -143,7 +153,11 @@ class ChurchListView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         churches = []
-        csv_path = os.path.join(settings.BASE_DIR, 'docs', 'NorthCarnmarthDeaneryLocations.csv')
+        csv_path = os.path.join(
+            settings.BASE_DIR,
+            'docs',
+            'NorthCarnmarthDeaneryLocations.csv'
+        )
         with open(csv_path, 'r') as file:
             for line in file.readlines()[1:]:
                 parts = line.strip().split(',')
@@ -174,12 +188,22 @@ class ContactView(FormView):
 
         # send email
         send_mail(
-            subject=f"Contact Form Submission from: {form.cleaned_data['name']}",
+            subject=(
+                f"Contact Form Submission from: "
+                f"{form.cleaned_data['name']}"
+            ),
             message=form.cleaned_data['message'],
             from_email=form.cleaned_data['email'],
             recipient_list=[settings.DEFAULT_FROM_EMAIL],
         )
-
-        print("contact form submitted:", form.cleaned_data)  # Remove me before production
+        # Remove me before production
+        print("contact form submitted:", form.cleaned_data)
 
         return super().form_valid(form)
+
+
+class AboutPage(TemplateView):
+    """
+    Displays about page"
+    """
+    template_name = 'home/about.html'

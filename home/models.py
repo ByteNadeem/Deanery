@@ -49,7 +49,8 @@ class NewsletterSubscriber(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.email} - {'Confirmed' if self.is_confirmed else 'Pending'}"
+        status = 'Confirmed' if self.is_confirmed else 'Pending'
+        return f"{self.email} - {status}"
 
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}".strip()
