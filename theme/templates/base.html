@@ -22,11 +22,13 @@
                 <a
                     href="/"
                     class="bg-neutral rounded-lg px-4 py-2 shadow hover:bg-primary hover:text-white transition-colors max-h-[40px] max-w-[40px]"
-                    ><img
+                >
+                    <img
                         src="{% static '/css/images/deanery_logo_crop.png' %}"
                         alt="Deanery Logo"
-                        class="h-10 w-10"
-                /></a>
+                        class="sm:h-25 sm:w-25 md:h-35 md:w-35 lg:h-50 lg:w-50 object-contain"
+                    />
+                </a>
             </nav>
             <nav class="flex gap-4">
                 <a
@@ -59,13 +61,31 @@
 
         <!-- Fixed Footer -->
         <footer
-            class="fixed bottom-0 left-0 w-full bg-neutral text-neutral-content flex items-center justify-between px-6 z-50"
+            class="fixed bottom-0 left-0 w-full bg-neutral text-neutral-content px-6 z-50"
             style="height: 10rem"
         >
-            <p class="m-0">Copyright © {% now 'Y' %} - All rights reserved</p>
-            <nav class="flex gap-4">
-                <div>
-                    <button class="btn" onclick="newsletter_modal.showModal()">
+            <div
+                class="relative w-full h-full flex flex-col items-center justify-center"
+            >
+                <!-- Center socials and subscribe -->
+                <div class="flex flex-col items-center justify-center">
+                    <div
+                        class="flex gap-6 items-center justify-center text-xl mb-4"
+                    >
+                        <a href="#" aria-label="Facebook"
+                            ><i class="fab fa-facebook-f"></i
+                        ></a>
+                        <a href="#" aria-label="YouTube"
+                            ><i class="fab fa-youtube"></i
+                        ></a>
+                        <a href="#" aria-label="Twitter"
+                            ><i class="fab fa-twitter"></i
+                        ></a>
+                    </div>
+                    <button
+                        class="btn btn-primary btn-sm text-xs mt-2 sm:text-sm md:text-base whitespace-nowrap"
+                        onclick="newsletter_modal.showModal()"
+                    >
                         Subscribe to our Newsletter
                     </button>
                     <dialog
@@ -179,18 +199,13 @@
                         </div>
                     </dialog>
                 </div>
-                <div>
-                    <a href="#" aria-label="Facebook"
-                        ><i class="fab fa-facebook-f"></i
-                    ></a>
-                    <a href="#" aria-label="YouTube"
-                        ><i class="fab fa-youtube"></i
-                    ></a>
-                    <a href="#" aria-label="Twitter"
-                        ><i class="fab fa-twitter"></i
-                    ></a>
+                <!-- Copyright bottom right -->
+                <div class="absolute bottom-2 right-6">
+                    <p class="m-0 text-sm">
+                        &copy; {% now 'Y' %} - All rights reserved
+                    </p>
                 </div>
-            </nav>
+            </div>
         </footer>
 
         {% block extra_js %}{% endblock %}
