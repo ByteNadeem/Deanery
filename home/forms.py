@@ -4,10 +4,10 @@ from .models import NewsletterSubscriber
 from config import settings
 from django.views.generic.edit import FormView
 from django.core.mail import send_mail
-#  Newsletter Signup form here
 
 
 class NewsletterSignupForm(forms.ModelForm):
+    """Form for newsletter signup with consent checkbox"""
     consent = forms.BooleanField(
         required=True,
         error_messages={
@@ -46,8 +46,9 @@ class NewsletterSignupForm(forms.ModelForm):
 
 class ContactForm(forms.Form):
     """Display contact information"""
-    name = forms.CharField(max_length=100, required=True)
-    email = forms.EmailField(required=True)
+    name = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    telephone = forms.CharField(max_length=20, required=False)
     message = forms.CharField(
-        widget=forms.Textarea, required=True, max_length=2000
+        widget=forms.Textarea, max_length=2000
     )

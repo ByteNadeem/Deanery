@@ -169,6 +169,7 @@ class ContactView(FormView):
         # Process the form data here (e.g., send an email)
         name = form.cleaned_data['name']
         email = form.cleaned_data['email']
+        telephone = form.cleaned_data['telephone']
         message = form.cleaned_data['message']
 
         # send email
