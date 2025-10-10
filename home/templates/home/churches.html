@@ -5,33 +5,99 @@
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
     >
         {% for church in churches %}
-        <div
-            class="card bg-base-100 shadow-lg hover:shadow-xl transition-shadow duration-200"
-        >
-            <div class="card-body">
-                <h2 class="card-title text-xl font-semibold">
-                    {{ church.name }}
-                </h2>
-                <p class="text-base text-gray-600">{{ church.address }}</p>
-                <p class="text-sm text-gray-500">{{ church.contact }}</p>
-                {% if church.image %}
-                <img
-                    src="{{ church.image.url }}"
-                    alt="{{ church.name }}"
-                    class="w-full h-32 object-cover rounded mt-4"
-                />
-                {% endif %}
-                <div class="card-actions mt-4">
-                    <a
-                        href="{{ church.website }}"
-                        class="btn btn-primary btn-sm"
-                        target="_blank"
-                        >Visit Website</a
-                    >
+        <div class="flip-card">
+            <div
+                class="flip-card-inner transition-transform duration-500"
+                onclick="this.classList.toggle('flipped')"
+            >
+                <!-- Front Side -->
+                <div
+                    class="flip-card-front card bg-base-100 shadow-lg cursor-pointer flex flex-col items-center justify-center"
+                >
+                    {% if church.image %}
+                    <img
+                        src="{{ church.image.url }}"
+                        alt="{{ church.name }}"
+                        class="w-full h-32 object-cover rounded-t"
+                    />
+                    {% endif %}
+                    <h2 class="card-title text-xl font-semibold mt-2">
+                        {{ church.name }}
+                    </h2>
+                </div>
+                <!-- Back Side -->
+                <div
+                    class="flip-card-back card bg-base-100 shadow-xl flex flex-col justify-between p-4"
+                >
+                    <div>
+                        <p class="font-semibold mb-2">
+                            <i class="fa-solid fa-location-dot mr-2"></i>{{
+                            church.address }}
+                        </p>
+                        <p class="mb-4">
+                            <i class="fa-solid fa-phone mr-2"></i>{{
+                            church.contact }}
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 justify-center mt-2">
+                        <a
+                            href="{{ church.website }}"
+                            class="btn btn-sm btn-primary"
+                            target="_blank"
+                            title="Website"
+                        >
+                            <i
+                                class="fa-solid fa-arrow-up-right-from-square"
+                            ></i>
+                        </a>
+                        <a
+                            href="https://www.google.com/maps/search/?api=1&query={{ church.address|urlencode }}"
+                            class="btn btn-sm btn-info"
+                            target="_blank"
+                            title="Directions"
+                        >
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </a>
+                        <button
+                            class="btn btn-sm btn-success"
+                            onclick="saveChurch('{{ church.id }}')"
+                            title="Save"
+                        >
+                            <i class="fa-solid fa-bookmark"></i>
+                        </button>
+                        <button
+                            class="btn btn-sm btn-warning"
+                            onclick="shareChurch('{{ church.name }}', '{{ church.website }}')"
+                            title="Share"
+                        >
+                            <i class="fa-solid fa-share-nodes"></i>
+                        </button>
+                        <a
+                            href="tel:{{ church.contact|cut:' ' }}"
+                            class="btn btn-sm btn-accent"
+                            title="Call"
+                        >
+                            <i class="fa-solid fa-phone"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 </div>
+{% endblock %} {% block extra_js %}
+<script>
+    function saveChurch(id) {
+        localStorage.setItem("savedChurch_" + id, true);
+        alert("Church saved!");
+    }
+    function shareChurch(name, url) {
+        if (navigator.share) {
+            navigator.share({ title: name, url: url });
+        } else {
+            prompt("Copy this link:", url);
+        }
+    }
+</script>
 {% endblock %}
