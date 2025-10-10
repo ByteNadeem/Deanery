@@ -1,3 +1,15 @@
+/* global styles */
+
+:root {
+    --primary-color: #000000; /* black */
+    --secondary-color: #2d3d26; /* cal poly green */
+    --tertiary-color: #941100; /* penn red */
+    --accent-color: #608351; /* fern green */
+    --text-color: #ffffff; /* white */
+    --background-color: #10150d; /* night green */
+    --font-family: "Arial", sans-serif;
+}
+
 /* card classes  */
 .flip-card {
     perspective: 1000px;
