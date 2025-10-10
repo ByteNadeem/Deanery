@@ -1,0 +1,44 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-3xl font-bold mb-6 text-center">About Us</h1>
+    <div class="prose lg:prose-xl mx-auto">
+        <p>
+            Welcome to our community! We are dedicated to providing support and
+            resources to help you grow in your faith and connect with others.
+        </p>
+        <h2>Our Mission</h2>
+        <p>
+            Our mission is to foster a welcoming environment where individuals
+            can explore their spirituality, deepen their understanding of faith,
+            and build meaningful relationships within the community.
+        </p>
+        <h2>What We Offer</h2>
+        <ul>
+            <li>Weekly worship services</li>
+            <li>Community outreach programs</li>
+            <li>Educational workshops and seminars</li>
+            <li>Support groups and counseling services</li>
+            <li>Social events and activities</li>
+        </ul>
+        <h2>Get Involved</h2>
+        <p>
+            We encourage everyone to get involved in our community. Whether
+            you're interested in volunteering, attending events, or simply
+            learning more about our faith, there are many ways to participate.
+        </p>
+        <p>
+            Feel free to reach out to us through our
+            <a href="{% url 'contact' %}">contact page</a> if you have any
+            questions or would like more information about our programs and
+            services.
+        </p>
+        <h2>Contact Us</h2>
+        <p>Email: info@example.com</p>
+        <p>Phone: +44(0)1234 567890</p>
+        <p>
+            Address: North Carnmagh Deanery, 123 Church Lane, Churchtown, ST
+            12345
+        </p>
+    </div>
+</div>
+{% endblock %}

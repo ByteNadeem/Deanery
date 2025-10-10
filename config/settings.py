@@ -134,7 +134,7 @@ GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")
 
 # Development email configuration
 # During development, emails will be printed to the console
-# For production, configure a real email backend, see below 
+# For production, configure a real email backend, see below
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'noreply@ncd.com'
 
