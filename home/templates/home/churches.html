@@ -1,11 +1,11 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="container mx-auto py-8">
-    <h1 class="text-3xl font-bold mb-6 text-center">Contact Your Church</h1>
+    <h1 class="text-lg font-bold mb-6 text-center">Contact Your Church</h1>
     <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4"
     >
         {% for church in churches %}
-        <div class="flip-card">
+        <div class="flip-card max-w-xs w-full mx-auto">
             <div
                 class="flip-card-inner transition-transform duration-500"
                 onclick="this.classList.toggle('flipped')"
@@ -18,16 +18,18 @@
                     <img
                         src="{{ church.image.url }}"
                         alt="{{ church.name }}"
-                        class="w-full h-32 object-cover rounded-t"
+                        class="w-full h-24 object-cover rounded-t"
                     />
                     {% endif %}
-                    <h2 class="card-title text-xl font-semibold mt-2">
+                    <h2
+                        class="card-title text-base font-semibold mt-2 text-center"
+                    >
                         {{ church.name }}
                     </h2>
                 </div>
                 <!-- Back Side -->
                 <div
-                    class="flip-card-back card bg-base-100 shadow-xl flex flex-col justify-between p-4"
+                    class="flip-card-back card bg-base-100 shadow-xl flex flex-col justify-between p-2"
                 >
                     <div>
                         <p class="font-semibold mb-2">
