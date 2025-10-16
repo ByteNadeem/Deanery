@@ -16,7 +16,7 @@ urlpatterns = [
         views.newsletter_unsubscribe,
         name='newsletter_unsubscribe'
     ),
-    path('churches/', views.ChurchListView.as_view(), name='church_list'),
+    path('churches/', views.churches, name='churches'),
     path('contact/', views.ContactView.as_view(), name='contact'),
     path('about/', views.AboutPage.as_view(), name='about'),
 ]

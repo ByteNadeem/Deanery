@@ -54,3 +54,16 @@ class NewsletterSubscriber(models.Model):
 
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}".strip()
+
+
+# Church model for grid view
+class Church(models.Model):
+    name = models.CharField(max_length=255, blank=True)
+    address = models.CharField(max_length=255, blank=True)
+    postcode = models.CharField(max_length=20, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    contact = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.name
