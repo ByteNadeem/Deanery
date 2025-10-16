@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.urls import reverse
 from django.views.generic import TemplateView, FormView
 # from requests import request
-from .models import NewsletterSubscriber
+from .models import NewsletterSubscriber, Church
 from .forms import NewsletterSignupForm, ContactForm
 
 
@@ -144,34 +144,34 @@ def newsletter_unsubscribe(request, token):
     })
 
 
-class ChurchListView(TemplateView):
-    """Display a list of churches"""
-    # Placeholder implementation - replace with actual church data retrieval
+# class ChurchListView(TemplateView):
+#     """Display a list of churches"""
+#     # Placeholder implementation - replace with actual church data retrieval
 
-    template_name = 'home/churches.html'
+#     template_name = 'home/churches.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        churches = []
-        csv_path = os.path.join(
-            settings.BASE_DIR,
-            'docs',
-            'NorthCarnmarthDeaneryLocations.csv'
-        )
-        with open(csv_path, 'r') as file:
-            for line in file.readlines()[1:]:
-                parts = line.strip().split(',')
-                if len(parts) >= 5:
-                    churches.append({
-                        'location': parts[0],
-                        'name': parts[1],
-                        'postcode': parts[2],
-                        'latitude': parts[3],
-                        'longitude': parts[4],
-                    })
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         churches = []
+#         csv_path = os.path.join(
+#             settings.BASE_DIR,
+#             'docs',
+#             'NorthCarnmarthDeaneryLocations.csv'
+#         )
+#         with open(csv_path, 'r') as file:
+#             for line in file.readlines()[1:]:
+#                 parts = line.strip().split(',')
+#                 if len(parts) >= 5:
+#                     churches.append({
+#                         'location': parts[0],
+#                         'name': parts[1],
+#                         'postcode': parts[2],
+#                         'latitude': parts[3],
+#                         'longitude': parts[4],
+#                     })
 
-        context['churches'] = churches
-        return context
+#         context['churches'] = churches
+#         return context
 
 
 class ContactView(FormView):
@@ -207,3 +207,8 @@ class AboutPage(TemplateView):
     Displays about page"
     """
     template_name = 'home/about.html'
+
+
+def churches(request):
+    churches = Church.objects.all()
+    return render(request, "home/churches.html", {"churches": churches})
