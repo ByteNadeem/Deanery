@@ -1,19 +1,19 @@
-Location,Name,Postcode,Latitude,Longitude,lat,lng
-Camborne,St Martins & Meriadoc's Church,TR14 7DF,50.21366877043699,-5.301824086944084,,
-Tuckingmill,All Saints Church,TR14 8RQ,50.22018118627777,-5.28559548851654,,
-Penponds,Holy Trinity Church,TR14 0QE,50.2069714041776,-5.315726981398124,,
-Crowan,Crowan Church,TR14 9NB,50.1637994385378,-5.297747715781878,,
-Treslothan,Treslothan Church,TR14 9LP,50.19979459265355,-5.296158532971124,,
-St Day,Holy Trinity Church,TR16 5LD,50.2375012032268,-5.183848071600855,,
-Carharrack,St Pirans Mission Church,TR16 5RP,50.22932300343052,-5.181982517627701,,
-Gwennap,St Wenappa Church,TR16 6BD,50.21784792863372,-5.170980531121604,,
-Chacewater,St Pauls Church,TR4 8PZ,50.2538404644562,-5.1565885605074975,,
-Stithians,St Stythians Church,TR3 7RN,50.19078249192517,-5.179857640256757,,
-St Andrews,St Andrews Church,TR15 2LL,50.23179708057995,-5.2256908348185105,,
-St Euny,St Euny Church,TR15 3BT,50.22613250475454,-5.238225500436913,,
-Pencoys,St Andrews Church,TR16 6LT,50.19936321351329,-5.241719334819983,,
-Lanner,Christ Church,TR16 6ER,50.21405614336509,-5.204804504135002,,
-Treleigh,St Stephens Church,TR16 4AY,50.24735827059275,-5.221079258107016,,
-Illogan,St Illogan Parish Church,TR16 4SR,50.24995225224803,-5.267790936114373,,
-Trevenson,Trevenson Church (St Illogan),TR15 3PT,50.23090881484769,-5.273534963967737,,
-Portreath,St Mary’s Church,TR16 4LW,50.26128781853588,-5.28668583111962,,
+Location,Name,Address,Postcode,Contact,Contact Email,Website,Latitude,Longitude
+Camborne,St Martin and St Meriadoc,Church Street,TR14 8AA,01209 712345,info@cambornechurch.org.uk,https://www.cambornechurch.org.uk,50.21345,-5.29789
+Tuckingmill,All Saints,15 Tuckingmill Road,TR14 8AB,01209 723456,contact@allsaintstuckingmill.org.uk,https://www.allsaintstuckingmill.org.uk,50.21567,-5.29876
+Penponds,Holy Trinity,5 Penponds Lane,TR14 8AC,01209 734567,info@holytrinitypenponds.org.uk,https://www.holytrinitypenponds.org.uk,50.22012,-5.30567
+Crowan,St Crewenna,12 Crowan Road,TR14 8AD,01209 745678,contact@crowanchurch.org.uk,https://www.crowanchurch.org.uk,50.22567,-5.31012
+Treslothan,St John,8 Treslothan Lane,TR14 8AE,01209 756789,info@treslothanchurch.org.uk,https://www.treslothanchurch.org.uk,50.23012,-5.31567
+St Day,Holy Trinity Church,33 Church Street,TR16 5LD,01209 822862,unknown,https://www.fivesaints.org.uk/st-day,50.2375012,-5.183848072
+Carharrack,St Piran,3 Carharrack Road,TR14 8AF,01209 767890,contact@stpiran.org.uk,https://www.fivesaints.org.uk/carharrack,50.23567,-5.32012
+Gwennap,St Wenappa,7 Gwennap Lane,TR14 8AG,01209 778901,info@gwennapchurch.org.uk,https://www.gwennapchurch.org.uk,50.24012,-5.32567
+Chacewater,St Paul,10 Chacewater Road,TR14 8AH,01209 789012,contact@stpaulchacewater.org.uk,https://www.fivesaints.org.uk/chacewater,50.24567,-5.33012
+Stithians,St Stythians,14 Stithians Lane,TR14 8AI,01209 790123,info@stithianschurch.org.uk,https://www.fivesaints.org.uk/stithians,50.25012,-5.33567
+St Andrews,St Andrews Church,Clinton Road,TR15 2LL,01209 216958,enquiries@redruthchurch.org.uk,https://redruthchurch.org.uk/st-andrews-redruth/,50.23179708,-5.225690835
+Redruth,St Euny,20 Redruth Road,TR14 8AJ,01209 801234,contact@streunychurch.org.uk,https://www.redruthchurch.org.uk,50.25567,-5.34012
+Pencoys,St Andrew,25 Pencoys Lane,TR14 8AK,01209 812345,info@standrewpencoys.org.uk,https://www.redruthchurch.org.uk/st-andrews-pencoys,50.26012,-5.34567
+Lanner,Christ Church,30 Lanner Road,TR14 8AL,01209 823456,contact@christchurchlanner.org.uk,https://www.redruthchurch.org.uk/christchurch-lanner,50.26567,-5.35012
+Treleigh,St Stephen,35 Treleigh Lane,TR14 8AM,01209 834567,info@ststephentreleigh.org.uk,https://www.treleighchurch.org.uk,50.27012,-5.35567
+Illogan,St Illogan Parish Church,St Illogan Church Road  ,"TR16 4SR,",07727 352030,contact@stilloganchurch.org.uk,http://saint-illogan.org.uk/,"50.24995225224803,",-5.267790936
+Trevenson,St Illogan,40 Trevenson Road,TR14 8AN,01209 845678,contact@stilloganchurch.org.uk,https://www.saint-illogan.org.uk/st-marys,50.27567,-5.36012
+Portreath,St Marys,70 Portreath Lane,TR14 8AO,01209 901567,contact@stmarysportreath.org.uk,https://www.stmarysportreath.org.uk,50.22789,-5.31123
