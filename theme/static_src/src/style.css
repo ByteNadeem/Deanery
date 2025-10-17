@@ -5,6 +5,7 @@
     --secondary-color: #2d3d26; /* cal poly green */
     --tertiary-color: #941100; /* penn red */
     --accent-color: #608351; /* fern green */
+    --accent-color-2: #c4d3b4; /* light fern green */
     --text-color: #ffffff; /* white */
     --background-color: #10150d; /* night green */
     --font-family: "Arial", sans-serif;
@@ -13,6 +14,8 @@
 /* card classes  */
 .flip-card {
     perspective: 1000px;
+    border: 1px solid var(--accent-color-2);
+    border-radius: 0.5rem;
 }
 .flip-card-inner {
     position: relative;
