@@ -11,7 +11,7 @@
 }
 
 /* card classes  */
-.flip-card {
+/* .flip-card {
     perspective: 1000px;
 }
 .flip-card-inner {
@@ -40,4 +40,4 @@
 }
 .flip-card-inner.flipped {
     transform: rotateY(180deg);
-}
+} */
