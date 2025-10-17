@@ -5,19 +5,22 @@
     --secondary-color: #2d3d26; /* cal poly green */
     --tertiary-color: #941100; /* penn red */
     --accent-color: #608351; /* fern green */
+    --accent-color-2: #c4d3b4; /* light fern green */
     --text-color: #ffffff; /* white */
     --background-color: #10150d; /* night green */
     --font-family: "Arial", sans-serif;
 }
 
 /* card classes  */
-/* .flip-card {
+.flip-card {
     perspective: 1000px;
+    border: 1px solid var(--accent-color-2);
+    border-radius: 0.5rem;
 }
 .flip-card-inner {
     position: relative;
     width: 100%;
-    height: 100%;
+    height: 250px;
     transition: transform 0.5s;
     transform-style: preserve-3d;
 }
@@ -31,13 +34,17 @@
     left: 0;
 }
 .flip-card-front {
+    background: var(--background-color);
+    color: var(--text-color);
     transform: rotateY(0deg);
-    z-index: 2;
+    z-index: 1;
 }
 .flip-card-back {
+    background: var(--secondary-color);
+    color: var(--text-color);
     transform: rotateY(180deg);
-    z-index: 1;
+    z-index: 2;
 }
 .flip-card-inner.flipped {
     transform: rotateY(180deg);
-} */
+}
