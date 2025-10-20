@@ -7,7 +7,7 @@
         {% for church in churches %} {% comment %}
         <pre>{{ church }}</pre>
         {% endcomment %}
-        <div class="flip-card max-w-xs w-full mx-auto">
+        <div class="flip-card max-w-xs w-full mb-auto">
             <div
                 class="flip-card-inner transition-transform duration-500"
                 onclick="this.classList.toggle('flipped')"
@@ -20,11 +20,19 @@
                     <img
                         src="{{ church.image.url }}"
                         alt="{{ church.name }}"
-                        class="w-full h-24 object-cover rounded-t"
+                        class="w-full h-full object-cover rounded-t"
                     />
+                    {% else %}
+                    <div
+                        class="w-full h-24 bg-gray-200 rounded-t flex items-center justify-center border-gray-300 border-b"
+                    >
+                        <i
+                            class="fa-solid fa-church text-4xl text-gray-400"
+                        ></i>
+                    </div>
                     {% endif %}
                     <h2
-                        class="card-title text-base font-semibold mt-2 text-center"
+                        class="card-title text-base font-semibold mt-4 text-center"
                     >
                         {{church.name}}
                     </h2>
