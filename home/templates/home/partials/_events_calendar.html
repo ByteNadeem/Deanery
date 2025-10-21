@@ -21,13 +21,11 @@
                     <h3 class="card-title">{{ event.title }}</h3>
                     <p class="text-sm mb-2">
                         <i class="fa-regular fa-calendar mr-1"></i>
-                        {{ event.start_time|date:"D, d M Y" }} at {{
-                        event.start_time|time:"g:i A" }}
+                        {{ event.start_time|date:"D, d M Y" }} at {{ event.start_time|time:"g:i A" }}
                     </p>
                     <p class="text-sm mb-2">
                         <i class="fa-solid fa-location-dot mr-1"></i>
-                        {% if event.church %}{{ event.church.name }}{% else %}{{
-                        event.location }}{% endif %}
+                        {% if event.church %}{{ event.church.name }}{% else %}{{ event.location }}{% endif %}
                     </p>
                     <div class="card-actions justify-end mt-2">
                         <a
@@ -61,21 +59,21 @@
                     <td>
                         <div class="font-semibold">{{ event.title }}</div>
                         {% if event.is_featured %}
-                        <span class="badge badge-secondary badge-sm mt-1"
-                            >Featured</span
-                        >
+                        <span class="badge badge-secondary badge-sm mt-1">Featured</span>
                         {% endif %}
                     </td>
                     <td>
                         {{ event.start_time|date:"D, d M Y" }}<br />
                         <span class="text-sm text-base-content/70">
-                            {{ event.start_time|time:"g:i A" }} - {{
-                            event.end_time|time:"g:i A" }}
+                            {{ event.start_time|time:"g:i A" }} - {{ event.end_time|time:"g:i A" }}
                         </span>
                     </td>
                     <td>
-                        {% if event.church %} {{ event.church.name }} {% else %}
-                        {{ event.location }} {% endif %}
+                        {% if event.church %}
+                            {{ event.church.name }}
+                        {% else %}
+                            {{ event.location }}
+                        {% endif %}
                     </td>
                     <td>
                         <div class="flex flex-wrap gap-2">
@@ -104,12 +102,11 @@
                                 title="Mark as interested"
                             >
                                 <i class="fa-solid fa-heart"></i>
-                                <span class="like-count ml-1"
-                                    >{{ event.like_count }}</span
-                                >
+                                <span class="like-count ml-1">{{ event.like_count }}</span>
                             </button>
-                            {% endif %} {% if user.is_staff or user.is_superuser
-                            %}
+                            {% endif %}
+                            
+                            {% if user.is_staff or user.is_superuser %}
                             <a
                                 href="{% url 'event_edit' event.pk %}"
                                 class="btn btn-sm btn-warning"
@@ -132,22 +129,19 @@
                 <tr>
                     <td colspan="4" class="text-center py-8">
                         <div class="flex flex-col items-center gap-2">
-                            <i
-                                class="fa-regular fa-calendar-xmark text-4xl text-base-300"
-                            ></i>
+                            <i class="fa-regular fa-calendar-xmark text-4xl text-base-300"></i>
                             <p class="text-base-content/70">
                                 No upcoming events scheduled. Check back soon!
                             </p>
                         </div>
                     </td>
                 </tr>
-                {% endfor %} {% if user.is_staff or user.is_superuser %}
+                {% endfor %}
+                
+                {% if user.is_staff or user.is_superuser %}
                 <tr>
                     <td colspan="4" class="text-center bg-base-200">
-                        <a
-                            href="{% url 'event_new' %}"
-                            class="btn btn-primary btn-sm"
-                        >
+                        <a href="{% url 'event_new' %}" class="btn btn-primary btn-sm">
                             <i class="fa-solid fa-plus mr-2"></i>Add New Event
                         </a>
                     </td>
@@ -164,29 +158,24 @@
         const fullUrl = window.location.origin + url;
 
         if (navigator.share) {
-            navigator
-                .share({
-                    title: title,
-                    url: fullUrl,
-                })
-                .catch((err) => console.error("Share failed:", err));
+            navigator.share({
+                title: title,
+                url: fullUrl,
+            }).catch((err) => console.error("Share failed:", err));
         } else {
             // Fallback: copy to clipboard
-            navigator.clipboard
-                .writeText(fullUrl)
-                .then(() => {
-                    alert("Link copied to clipboard!");
-                })
-                .catch((err) => {
-                    // Older fallback
-                    const tempInput = document.createElement("input");
-                    document.body.appendChild(tempInput);
-                    tempInput.value = fullUrl;
-                    tempInput.select();
-                    document.execCommand("copy");
-                    document.body.removeChild(tempInput);
-                    alert("Link copied to clipboard!");
-                });
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                alert("Link copied to clipboard!");
+            }).catch((err) => {
+                // Older fallback
+                const tempInput = document.createElement("input");
+                document.body.appendChild(tempInput);
+                tempInput.value = fullUrl;
+                tempInput.select();
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+                alert("Link copied to clipboard!");
+            });
         }
     }
 
@@ -198,32 +187,32 @@
             button.addEventListener("click", function () {
                 const eventId = this.dataset.eventId;
 
-                fetch(`/events/${eventId}/like/`, {
+                fetch(`/home/events/${eventId}/like/`, {
                     method: "POST",
                     headers: {
                         "X-CSRFToken": getCookie("csrftoken"),
                         "Content-Type": "application/json",
                     },
                 })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.status === "success") {
-                            const likeCount = this.querySelector(".like-count");
-                            likeCount.textContent = data.likes;
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.status === "success") {
+                        const likeCount = this.querySelector(".like-count");
+                        likeCount.textContent = data.likes;
 
-                            if (data.liked) {
-                                this.classList.add("btn-error");
-                            } else {
-                                this.classList.remove("btn-error");
-                            }
+                        if (data.liked) {
+                            this.classList.add("btn-error");
                         } else {
-                            alert("Please log in to like events");
+                            this.classList.remove("btn-error");
                         }
-                    })
-                    .catch((error) => {
-                        console.error("Error:", error);
-                        alert("An error occurred. Please try again.");
-                    });
+                    } else {
+                        alert("Please log in to like events");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    alert("An error occurred. Please try again.");
+                });
             });
         });
     });
@@ -236,9 +225,7 @@
             for (let i = 0; i < cookies.length; i++) {
                 const cookie = cookies[i].trim();
                 if (cookie.substring(0, name.length + 1) === name + "=") {
-                    cookieValue = decodeURIComponent(
-                        cookie.substring(name.length + 1)
-                    );
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
                 }
             }

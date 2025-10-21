@@ -1,5 +1,8 @@
 <!-- filepath: /Users/guns4kids/Documents/vscode-projects/Deanery/home/templates/home/events.html -->
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
 <div class="container mx-auto py-8 px-4">
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-3xl font-bold">Church Events</h1>
@@ -19,39 +22,25 @@
             <div class="card bg-base-100 shadow-xl">
                 {% if event.image %}
                 <figure class="h-48">
-                    <img
-                        src="{{ event.image.url }}"
-                        alt="{{ event.title }}"
-                        class="w-full h-full object-cover"
-                    />
+                    <img src="{{ event.image.url }}" alt="{{ event.title }}" class="w-full h-full object-cover" />
                 </figure>
                 {% else %}
-                <figure
-                    class="h-48 bg-base-200 flex items-center justify-center"
-                >
-                    <i
-                        class="fa-solid fa-calendar-days text-6xl text-base-300"
-                    ></i>
+                <figure class="h-48 bg-base-200 flex items-center justify-center">
+                    <i class="fa-solid fa-calendar-days text-6xl text-base-300"></i>
                 </figure>
                 {% endif %}
                 <div class="card-body">
                     <h3 class="card-title">{{ event.title }}</h3>
                     <p class="text-sm">
                         <i class="fa-regular fa-calendar mr-1"></i>
-                        {{ event.start_time|date:"D, d M Y" }} at {{
-                        event.start_time|time:"g:i A" }}
+                        {{ event.start_time|date:"D, d M Y" }} at {{ event.start_time|time:"g:i A" }}
                     </p>
                     <p class="text-sm">
                         <i class="fa-solid fa-location-dot mr-1"></i>
-                        {% if event.church %}{{ event.church.name }}{% else %}{{
-                        event.location }}{% endif %}
+                        {% if event.church %}{{ event.church.name }}{% else %}{{ event.location }}{% endif %}
                     </p>
                     <div class="card-actions justify-end mt-4">
-                        <a
-                            href="{% url 'event_detail' event.pk %}"
-                            class="btn btn-primary btn-sm"
-                            >View Details</a
-                        >
+                        <a href="{% url 'event_detail' event.pk %}" class="btn btn-primary btn-sm">View Details</a>
                     </div>
                 </div>
             </div>
@@ -80,53 +69,38 @@
                         <td>
                             <div class="font-semibold">{{ event.title }}</div>
                             {% if event.is_featured %}
-                            <span class="badge badge-secondary badge-sm"
-                                >Featured</span
-                            >
+                            <span class="badge badge-secondary badge-sm">Featured</span>
                             {% endif %}
                         </td>
                         <td>
-                            {{ event.start_time|date:"D, d M Y" }}<br />
+                            {{ event.start_time|date:"D, d M Y" }}<br>
                             <span class="text-sm text-base-content/70">
-                                {{ event.start_time|time:"g:i A" }} - {{
-                                event.end_time|time:"g:i A" }}
+                                {{ event.start_time|time:"g:i A" }} - {{ event.end_time|time:"g:i A" }}
                             </span>
                         </td>
                         <td>
-                            {% if event.church %} {{ event.church.name }} {%
-                            else %} {{ event.location }} {% endif %}
+                            {% if event.church %}
+                                {{ event.church.name }}
+                            {% else %}
+                                {{ event.location }}
+                            {% endif %}
                         </td>
                         <td>
                             <div class="flex flex-wrap gap-2">
-                                <a
-                                    href="{% url 'event_detail' event.pk %}"
-                                    class="btn btn-sm btn-outline"
-                                >
+                                <a href="{% url 'event_detail' event.pk %}" class="btn btn-sm btn-outline">
                                     Details
                                 </a>
                                 {% if user.is_authenticated %}
-                                <button
-                                    class="btn btn-sm btn-outline like-button {% if user in event.likes.all %}btn-error{% endif %}"
-                                    data-event-id="{{ event.pk }}"
-                                    data-likes="{{ event.like_count }}"
-                                >
+                                <button class="btn btn-sm btn-outline like-button {% if user in event.likes.all %}btn-error{% endif %}"
+                                        data-event-id="{{ event.pk }}"
+                                        data-likes="{{ event.like_count }}">
                                     <i class="fa-solid fa-heart"></i>
-                                    <span class="like-count"
-                                        >{{ event.like_count }}</span
-                                    >
+                                    <span class="like-count">{{ event.like_count }}</span>
                                 </button>
-                                {% endif %} {% if user.is_staff or
-                                user.is_superuser %}
-                                <a
-                                    href="{% url 'event_edit' event.pk %}"
-                                    class="btn btn-sm btn-warning"
-                                    >Edit</a
-                                >
-                                <a
-                                    href="{% url 'event_delete' event.pk %}"
-                                    class="btn btn-sm btn-error"
-                                    >Delete</a
-                                >
+                                {% endif %}
+                                {% if user.is_staff or user.is_superuser %}
+                                <a href="{% url 'event_edit' event.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="{% url 'event_delete' event.pk %}" class="btn btn-sm btn-error">Delete</a>
                                 {% endif %}
                             </div>
                         </td>
