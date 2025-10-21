@@ -16,13 +16,12 @@
                     <p class="text-sm text-neutral-content mb-1">Date & Time</p>
                     <p class="font-medium">
                         <i class="fa-regular fa-calendar mr-1"></i>
-                        {{ event.start_time|date:"D, d M Y" }} at {{
-                        event.start_time|time:"g:i A" }} {% if
-                        event.end_time|date:"D, d M Y" ==
-                        event.start_time|date:"D, d M Y" %} - {{
-                        event.end_time|time:"g:i A" }} {% else %} to {{
-                        event.end_time|date:"D, d M Y" }} at {{
-                        event.end_time|time:"g:i A" }} {% endif %}
+                        {{ event.start_time|date:"D, d M Y" }} at {{ event.start_time|time:"g:i A" }}
+                        {% if event.end_time|date:"D, d M Y" == event.start_time|date:"D, d M Y" %}
+                            - {{ event.end_time|time:"g:i A" }}
+                        {% else %}
+                            to {{ event.end_time|date:"D, d M Y" }} at {{ event.end_time|time:"g:i A" }}
+                        {% endif %}
                     </p>
                 </div>
 
@@ -30,11 +29,14 @@
                     <p class="text-sm text-neutral-content mb-1">Location</p>
                     <p class="font-medium">
                         <i class="fa-solid fa-location-dot mr-1"></i>
-                        {% if event.church %} {{ event.church.name }} {% if
-                        event.church.address %}<br />{{ event.church.address
-                        }}{% endif %} {% if event.church.postcode %}, {{
-                        event.church.postcode }}{% endif %} {% else %} {{
-                        event.location }} {% endif %}
+                        {% if event.church %}
+                            {{ event.church.name }}
+                            {% if event.church.address %}
+                                <br><span class="text-sm">{{ event.church.address }}, {{ event.church.postcode }}</span>
+                            {% endif %}
+                        {% else %}
+                            {{ event.location }}
+                        {% endif %}
                     </p>
                 </div>
             </div>
