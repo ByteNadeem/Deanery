@@ -2,6 +2,12 @@ from pathlib import Path
 import os
 import dj_database_url
 import sys
+from dotenv import load_dotenv
+
+
+# Load .env file
+load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,6 +18,7 @@ if os.path.isfile("env.py"):
     import env
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
 DEBUG = True
 ALLOWED_HOSTS = [
     "deanery-11c659a713eb.herokuapp.com",

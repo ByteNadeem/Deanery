@@ -16,6 +16,7 @@ env.py
 # Django
 *.log
 db.sqlite3
+db.sqlite3-journal
 media/
 staticfiles/
 local_settings.py
@@ -23,6 +24,14 @@ settings_local.py
 
 # VS Code
 .vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
 
 # Node.js / Frontend
 node_modules/
@@ -32,10 +41,18 @@ yarn-error.log*
 build/
 dist/
 *.tgz
+package-lock.json
+yarn.lock
 
 # OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+Desktop.ini
 
 # Coverage reports
 htmlcov/
@@ -46,30 +63,32 @@ nosetests.xml
 coverage.xml
 *.cover
 *.py,cover
+.pytest_cache/
+.tox/
 
-# Migrations
+# Migrations (be careful with this - usually want to commit migrations)
+# Only ignore compiled Python in migrations
+**/migrations/__pycache__/
 **/migrations/*.pyc
 **/migrations/*.pyo
 **/migrations/*.pyd
-**/migrations/__pycache__/
-**/migrations/*.sqlite3
 
-# Others
+# Backup files
+*.bak
 *.swp
 *.swo
-*.csv
+*~
 
-# Windows OS files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
+# Celery
+celerybeat-schedule
+celerybeat.pid
 
-# Python Windows environments
-Scripts/
-.venv/
-env.py
+# SQLite database files
+*.sqlite
+*.sqlite3
+*.db
 
-# Media files
+# Media files (uploaded content)
 media/
 *.jpg
 *.jpeg
@@ -77,3 +96,87 @@ media/
 *.gif
 *.pdf
 *.mp4
+*.mov
+*.avi
+*.webm
+
+# Temporary files
+*.tmp
+*.temp
+
+# MacOS
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# Sentry
+.sentryclirc
+
+# Webpack
+webpack-stats.json
+
+# Redis
+dump.rdb
+
+# Logs
+logs/
+*.log
+
+# SSL certificates (if storing locally)
+*.pem
+*.key
+*.crt
+*.csr
+
+# Environment-specific files
+.envrc
+.env.local
+.env.*.local
