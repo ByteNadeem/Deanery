@@ -1,0 +1,234 @@
+<!-- filepath: /Users/guns4kids/Documents/vscode-projects/Deanery/home/templates/home/events.html -->
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mx-auto py-8 px-4">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Church Events</h1>
+        {% if user.is_staff or user.is_superuser %}
+        <a href="{% url 'event_new' %}" class="btn btn-primary">
+            <i class="fa-solid fa-plus mr-2"></i>Add New Event
+        </a>
+        {% endif %}
+    </div>
+
+    <!-- Featured Events Section -->
+    {% if featured_events %}
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Featured Events</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for event in featured_events %}
+            <div class="card bg-base-100 shadow-xl">
+                {% if event.image %}
+                <figure class="h-48">
+                    <img
+                        src="{{ event.image.url }}"
+                        alt="{{ event.title }}"
+                        class="w-full h-full object-cover"
+                    />
+                </figure>
+                {% else %}
+                <figure
+                    class="h-48 bg-base-200 flex items-center justify-center"
+                >
+                    <i
+                        class="fa-solid fa-calendar-days text-6xl text-base-300"
+                    ></i>
+                </figure>
+                {% endif %}
+                <div class="card-body">
+                    <h3 class="card-title">{{ event.title }}</h3>
+                    <p class="text-sm">
+                        <i class="fa-regular fa-calendar mr-1"></i>
+                        {{ event.start_time|date:"D, d M Y" }} at {{
+                        event.start_time|time:"g:i A" }}
+                    </p>
+                    <p class="text-sm">
+                        <i class="fa-solid fa-location-dot mr-1"></i>
+                        {% if event.church %}{{ event.church.name }}{% else %}{{
+                        event.location }}{% endif %}
+                    </p>
+                    <div class="card-actions justify-end mt-4">
+                        <a
+                            href="{% url 'event_detail' event.pk %}"
+                            class="btn btn-primary btn-sm"
+                            >View Details</a
+                        >
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Upcoming Events Table -->
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Upcoming Events</h2>
+        {% if events %}
+        <div class="overflow-x-auto bg-base-100 shadow-lg rounded-lg">
+            <table class="table table-zebra w-full">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date & Time</th>
+                        <th>Location</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event in events %}
+                    <tr>
+                        <td>
+                            <div class="font-semibold">{{ event.title }}</div>
+                            {% if event.is_featured %}
+                            <span class="badge badge-secondary badge-sm"
+                                >Featured</span
+                            >
+                            {% endif %}
+                        </td>
+                        <td>
+                            {{ event.start_time|date:"D, d M Y" }}<br />
+                            <span class="text-sm text-base-content/70">
+                                {{ event.start_time|time:"g:i A" }} - {{
+                                event.end_time|time:"g:i A" }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if event.church %} {{ event.church.name }} {%
+                            else %} {{ event.location }} {% endif %}
+                        </td>
+                        <td>
+                            <div class="flex flex-wrap gap-2">
+                                <a
+                                    href="{% url 'event_detail' event.pk %}"
+                                    class="btn btn-sm btn-outline"
+                                >
+                                    Details
+                                </a>
+                                {% if user.is_authenticated %}
+                                <button
+                                    class="btn btn-sm btn-outline like-button {% if user in event.likes.all %}btn-error{% endif %}"
+                                    data-event-id="{{ event.pk }}"
+                                    data-likes="{{ event.like_count }}"
+                                >
+                                    <i class="fa-solid fa-heart"></i>
+                                    <span class="like-count"
+                                        >{{ event.like_count }}</span
+                                    >
+                                </button>
+                                {% endif %} {% if user.is_staff or
+                                user.is_superuser %}
+                                <a
+                                    href="{% url 'event_edit' event.pk %}"
+                                    class="btn btn-sm btn-warning"
+                                    >Edit</a
+                                >
+                                <a
+                                    href="{% url 'event_delete' event.pk %}"
+                                    class="btn btn-sm btn-error"
+                                    >Delete</a
+                                >
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fa-solid fa-info-circle"></i>
+            <span>No upcoming events scheduled. Check back soon!</span>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Past Events -->
+    {% if past_events %}
+    <div>
+        <h2 class="text-2xl font-bold mb-4">Past Events</h2>
+        <div class="collapse collapse-arrow bg-base-100 shadow-lg">
+            <input type="checkbox" />
+            <div class="collapse-title text-xl font-medium">
+                View past events ({{ past_events|length }})
+            </div>
+            <div class="collapse-content">
+                <div class="overflow-x-auto">
+                    <table class="table table-sm">
+                        <tbody>
+                            {% for event in past_events %}
+                            <tr>
+                                <td>{{ event.title }}</td>
+                                <td>{{ event.start_time|date:"D, d M Y" }}</td>
+                                <td>
+                                    <a
+                                        href="{% url 'event_detail' event.pk %}"
+                                        class="link link-primary"
+                                        >View</a
+                                    >
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Event like functionality
+    document.addEventListener("DOMContentLoaded", function () {
+        const likeButtons = document.querySelectorAll(".like-button");
+
+        likeButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                const eventId = this.dataset.eventId;
+
+                fetch(`/events/${eventId}/like/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.status === "success") {
+                            const likeCount = this.querySelector(".like-count");
+                            likeCount.textContent = data.likes;
+
+                            if (data.liked) {
+                                this.classList.add("btn-error");
+                            } else {
+                                this.classList.remove("btn-error");
+                            }
+                        } else {
+                            alert("Please log in to like events");
+                        }
+                    })
+                    .catch((error) => console.error("Error:", error));
+            });
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}

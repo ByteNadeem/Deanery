@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto py-8 px-4">
+    <div class="max-w-2xl mx-auto bg-base-100 shadow-lg rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-6">
+            {% if form.instance.pk %}Edit{% else %}Create New{% endif %} Event
+        </h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-control mb-4">
+                <label class="label">
+                    <span class="label-text">Event Title</span>
+                </label>
+                {{ form.title.errors }}
+                <input type="text" name="{{ form.title.name }}" value="{{ form.title.value|default:'' }}"
+                    class="input input-bordered" required>
+            </div>
+
+            <div class="form-control mb-4">
+                <label class="label">
+                    <span class="label-text">Description</span>
+                </label>
+                {{ form.description.errors }}
+                <textarea name="{{ form.description.name }}" class="textarea textarea-bordered h-32"
+                    required>{{ form.description.value|default:'' }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">Start Date & Time</span>
+                    </label>
+                    {{ form.start_time.errors }}
+                    <input type="datetime-local" name="{{ form.start_time.name }}"
+                        value="{% if form.start_time.value %}{{ form.start_time.value|date:'Y-m-d\TH:i' }}{% endif %}"
+                        class="input input-bordered"
+                        required>
+                </div>
+
+                <div class="form-control">
+                    <label class="label">
+                        <span class="label-text">End Date & Time</span>
+                    </label>
+                    {{ form.end_time.errors }}
+                    <input type="datetime-local" name="{{ form.end_time.name }}"
+                        value="{% if form.end_time.value %}{{ form.end_time.value|date:'Y-m-d\TH:i' }}{% endif %}"
+                        class="input input-bordered"
+                        required>
+                </div>
+            </div>
+
+            <div class="form-control mb-4">
+                <label class="label">
+                    <span class="label-text">Associated Church (optional)</span>
+                </label>
+                {{ form.church.errors }}
+                <select name="church" class="select select-bordered">
+                    <option value="">Select a church (if applicable)</option>
+                    {% for choice in form.church.field.choices %}
+                        {% if choice.0 %}
+                        <option value="{{ choice.0 }}" {% if form.church.value == choice.0|stringformat:"s" %}selected{% endif %}>
+                            {{ choice.1 }}
+                        </option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-control mb-4">
+                <label class="label">
+                    <span class="label-text">Location (if not at a church)</span>
+                </label>
+                {{ form.location.errors }}
+                <input type="text" name="{{ form.location.name }}" value="{{ form.location.value|default:'' }}"
+                    class="input input-bordered" placeholder="e.g. Community Center, 123 Main St">
+            </div>
+
+            <div class="form-control mb-4">
+                <label class="label">
+                    <span class="label-text">Event Image</span>
+                </label>
+                {{ form.image.errors }}
+                {% if form.instance.image %}
+                <div class="mb-2">
+                    <img src="{{ form.instance.image.url }}" alt="Current event image" class="h-32 object-cover">
+                    <p class="text-sm">Current image. Upload a new one to replace.</p>
+                </div>
+                {% endif %}
+                <input type="file" name="{{ form.image.name }}" class="file-input file-input-bordered w-full">
+            </div>
+
+            <div class="form-control mb-6">
+                <label class="label cursor-pointer">
+                    <span class="label-text">Feature this event</span>
+                    <input type="checkbox" name="{{ form.is_featured.name }}" {% if form.is_featured.value %}checked{%
+                        endif %} class="checkbox">
+                </label>
+                <p class="text-xs text-neutral-content">Featured events will be highlighted on the homepage</p>
+            </div>
+
+            <div class="flex gap-4 justify-end">
+                <a href="{% url 'events' %}" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    {% if form.instance.pk %}Update{% else %}Create{% endif %} Event
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
