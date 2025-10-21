@@ -1,0 +1,172 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mx-auto py-8">
+    <div class="bg-base-100 shadow-lg rounded-lg overflow-hidden">
+        {% if event.image %}
+        <div
+            class="h-64 bg-cover bg-center"
+            style="background-image: url('{{ event.image.url }}')"
+        ></div>
+        {% endif %}
+
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-2">{{ event.title }}</h1>
+
+            <div class="flex flex-wrap gap-4 mb-4">
+                <div>
+                    <p class="text-sm text-neutral-content mb-1">Date & Time</p>
+                    <p class="font-medium">
+                        <i class="fa-regular fa-calendar mr-1"></i>
+                        {{ event.start_time|date:"D, d M Y" }} at {{
+                        event.start_time|time:"g:i A" }} {% if
+                        event.end_time|date:"D, d M Y" ==
+                        event.start_time|date:"D, d M Y" %} - {{
+                        event.end_time|time:"g:i A" }} {% else %} to {{
+                        event.end_time|date:"D, d M Y" }} at {{
+                        event.end_time|time:"g:i A" }} {% endif %}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-neutral-content mb-1">Location</p>
+                    <p class="font-medium">
+                        <i class="fa-solid fa-location-dot mr-1"></i>
+                        {% if event.church %} {{ event.church.name }} {% if
+                        event.church.address %}<br />{{ event.church.address
+                        }}{% endif %} {% if event.church.postcode %}, {{
+                        event.church.postcode }}{% endif %} {% else %} {{
+                        event.location }} {% endif %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="prose max-w-none mb-6">
+                {{ event.description|linebreaks }}
+            </div>
+
+            <div class="flex flex-wrap gap-3 mt-6">
+                {% if user.is_authenticated %}
+                <button
+                    class="btn btn-outline like-button {% if user in event.likes.all %}liked{% endif %}"
+                    data-event-id="{{ event.pk }}"
+                    data-likes="{{ event.like_count }}"
+                >
+                    <i class="fa-solid fa-heart"></i>
+                    <span class="like-count ml-1">{{ event.like_count }}</span>
+                    Like
+                </button>
+                {% endif %}
+
+                <button
+                    class="btn btn-outline"
+                    onclick="shareEvent('{{ event.title }}', '{% url 'event_detail' event.pk %}')"
+                >
+                    <i class="fa-solid fa-share-nodes mr-1"></i> Share
+                </button>
+
+                {% if event.church %}
+                <a href="{% url 'churches' %}" class="btn btn-outline">
+                    <i class="fa-solid fa-church mr-1"></i> Visit Church
+                </a>
+                {% endif %} {% if user.is_staff or user.is_superuser %}
+                <div class="divider"></div>
+                <div class="flex gap-2 mt-2">
+                    <a
+                        href="{% url 'event_edit' event.pk %}"
+                        class="btn btn-warning"
+                    >
+                        <i class="fa-solid fa-edit mr-1"></i> Edit
+                    </a>
+                    <a
+                        href="{% url 'event_delete' event.pk %}"
+                        class="btn btn-error"
+                    >
+                        <i class="fa-solid fa-trash mr-1"></i> Delete
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-6">
+        <a href="{% url 'events' %}" class="btn">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Back to Events
+        </a>
+    </div>
+</div>
+
+<script>
+    function shareEvent(title, url) {
+        if (navigator.share) {
+            navigator
+                .share({
+                    title: title,
+                    url: window.location.origin + url,
+                })
+                .catch(console.error);
+        } else {
+            const tempInput = document.createElement("input");
+            document.body.appendChild(tempInput);
+            tempInput.value = window.location.origin + url;
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Link copied to clipboard!");
+        }
+    }
+
+    // Event like functionality
+    document.addEventListener("DOMContentLoaded", function () {
+        const likeButtons = document.querySelectorAll(".like-button");
+
+        likeButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                const eventId = this.dataset.eventId;
+
+                fetch(`/events/${eventId}/like/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.status === "success") {
+                            const likeCount = this.querySelector(".like-count");
+                            likeCount.textContent = data.likes;
+
+                            if (data.liked) {
+                                this.classList.add("liked");
+                            } else {
+                                this.classList.remove("liked");
+                            }
+                        } else {
+                            alert("Please log in to like events");
+                        }
+                    })
+                    .catch((error) => console.error("Error:", error));
+            });
+        });
+    });
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,248 @@
+<div class="events-calendar bg-base-100 rounded-lg shadow-lg p-4 mb-6">
+    <h2 class="text-xl font-bold mb-4">Upcoming Events</h2>
+
+    <!-- Featured Events Section -->
+    {% if featured_events %}
+    <div class="featured-events mb-6">
+        <h3 class="text-lg font-semibold mb-2">Featured Events</h3>
+        <div class="grid gap-4 md:grid-cols-2">
+            {% for event in featured_events %}
+            <div class="card bg-secondary text-primary-content shadow-xl">
+                {% if event.image %}
+                <figure class="h-40">
+                    <img
+                        src="{{ event.image.url }}"
+                        alt="{{ event.title }}"
+                        class="w-full h-full object-cover"
+                    />
+                </figure>
+                {% endif %}
+                <div class="card-body">
+                    <h3 class="card-title">{{ event.title }}</h3>
+                    <p class="text-sm mb-2">
+                        <i class="fa-regular fa-calendar mr-1"></i>
+                        {{ event.start_time|date:"D, d M Y" }} at {{
+                        event.start_time|time:"g:i A" }}
+                    </p>
+                    <p class="text-sm mb-2">
+                        <i class="fa-solid fa-location-dot mr-1"></i>
+                        {% if event.church %}{{ event.church.name }}{% else %}{{
+                        event.location }}{% endif %}
+                    </p>
+                    <div class="card-actions justify-end mt-2">
+                        <a
+                            href="{% url 'event_detail' event.pk %}"
+                            class="btn btn-primary btn-sm"
+                        >
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Calendar Grid -->
+    <div class="overflow-x-auto">
+        <table class="table table-zebra w-full">
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date & Time</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for event in upcoming_events %}
+                <tr>
+                    <td>
+                        <div class="font-semibold">{{ event.title }}</div>
+                        {% if event.is_featured %}
+                        <span class="badge badge-secondary badge-sm mt-1"
+                            >Featured</span
+                        >
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ event.start_time|date:"D, d M Y" }}<br />
+                        <span class="text-sm text-base-content/70">
+                            {{ event.start_time|time:"g:i A" }} - {{
+                            event.end_time|time:"g:i A" }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if event.church %} {{ event.church.name }} {% else %}
+                        {{ event.location }} {% endif %}
+                    </td>
+                    <td>
+                        <div class="flex flex-wrap gap-2">
+                            <a
+                                href="{% url 'event_detail' event.pk %}"
+                                class="btn btn-sm btn-outline"
+                            >
+                                <i class="fa-solid fa-circle-info mr-1"></i>
+                                Details
+                            </a>
+
+                            <button
+                                class="btn btn-sm btn-outline"
+                                onclick="shareEvent('{{ event.title }}', '{% url 'event_detail' event.pk %}')"
+                                title="Share event"
+                            >
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+
+                            {% if user.is_authenticated %}
+                            <!-- Like button -->
+                            <button
+                                class="btn btn-sm btn-outline like-button {% if user in event.likes.all %}btn-error{% endif %}"
+                                data-event-id="{{ event.pk }}"
+                                data-likes="{{ event.like_count }}"
+                                title="Mark as interested"
+                            >
+                                <i class="fa-solid fa-heart"></i>
+                                <span class="like-count ml-1"
+                                    >{{ event.like_count }}</span
+                                >
+                            </button>
+                            {% endif %} {% if user.is_staff or user.is_superuser
+                            %}
+                            <a
+                                href="{% url 'event_edit' event.pk %}"
+                                class="btn btn-sm btn-warning"
+                                title="Edit event"
+                            >
+                                <i class="fa-solid fa-edit"></i>
+                            </a>
+                            <a
+                                href="{% url 'event_delete' event.pk %}"
+                                class="btn btn-sm btn-error"
+                                title="Delete event"
+                            >
+                                <i class="fa-solid fa-trash"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-8">
+                        <div class="flex flex-col items-center gap-2">
+                            <i
+                                class="fa-regular fa-calendar-xmark text-4xl text-base-300"
+                            ></i>
+                            <p class="text-base-content/70">
+                                No upcoming events scheduled. Check back soon!
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %} {% if user.is_staff or user.is_superuser %}
+                <tr>
+                    <td colspan="4" class="text-center bg-base-200">
+                        <a
+                            href="{% url 'event_new' %}"
+                            class="btn btn-primary btn-sm"
+                        >
+                            <i class="fa-solid fa-plus mr-2"></i>Add New Event
+                        </a>
+                    </td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- JavaScript for event interactions -->
+<script>
+    function shareEvent(title, url) {
+        const fullUrl = window.location.origin + url;
+
+        if (navigator.share) {
+            navigator
+                .share({
+                    title: title,
+                    url: fullUrl,
+                })
+                .catch((err) => console.error("Share failed:", err));
+        } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard
+                .writeText(fullUrl)
+                .then(() => {
+                    alert("Link copied to clipboard!");
+                })
+                .catch((err) => {
+                    // Older fallback
+                    const tempInput = document.createElement("input");
+                    document.body.appendChild(tempInput);
+                    tempInput.value = fullUrl;
+                    tempInput.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(tempInput);
+                    alert("Link copied to clipboard!");
+                });
+        }
+    }
+
+    // Event like functionality
+    document.addEventListener("DOMContentLoaded", function () {
+        const likeButtons = document.querySelectorAll(".like-button");
+
+        likeButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+                const eventId = this.dataset.eventId;
+
+                fetch(`/events/${eventId}/like/`, {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCookie("csrftoken"),
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.status === "success") {
+                            const likeCount = this.querySelector(".like-count");
+                            likeCount.textContent = data.likes;
+
+                            if (data.liked) {
+                                this.classList.add("btn-error");
+                            } else {
+                                this.classList.remove("btn-error");
+                            }
+                        } else {
+                            alert("Please log in to like events");
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error:", error);
+                        alert("An error occurred. Please try again.");
+                    });
+            });
+        });
+    });
+
+    // Get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            const cookies = document.cookie.split(";");
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>

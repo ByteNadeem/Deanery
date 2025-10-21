@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<div class="container mx-auto py-8 px-4">
+    <div class="max-w-md mx-auto bg-base-100 shadow-lg rounded-lg p-6">
+        <h1 class="text-2xl font-bold mb-4">Delete Event</h1>
+
+        <p class="mb-4">
+            Are you sure you want to delete the event "{{ object.title }}"?
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="flex gap-4">
+                <a
+                    href="{% url 'event_detail' object.pk %}"
+                    class="btn btn-outline flex-1"
+                    >Cancel</a
+                >
+                <button type="submit" class="btn btn-error flex-1">
+                    Delete
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
