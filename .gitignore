@@ -68,3 +68,12 @@ Desktop.ini
 Scripts/
 .venv/
 env.py
+
+# Media files
+media/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.pdf
+*.mp4
