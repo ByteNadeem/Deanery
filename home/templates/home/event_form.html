@@ -29,7 +29,7 @@
                     required>{{ form.description.value|default:'' }}</textarea>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div class="form-control">
                     <label class="label">
                         <span class="label-text">Start Date & Time</span>
@@ -86,26 +86,27 @@
                 {{ form.image.errors }}
                 {% if form.instance.image %}
                 <div class="mb-2">
-                    <img src="{{ form.instance.image.url }}" alt="Current event image" class="h-32 object-cover">
-                    <p class="text-sm">Current image. Upload a new one to replace.</p>
+                    <img src="{{ form.instance.image.url }}" alt="Current event image" class="h-32 object-cover rounded">
+                    <p class="text-sm text-base-content/70 mt-1">Current image. Upload a new one to replace.</p>
                 </div>
                 {% endif %}
-                <input type="file" name="{{ form.image.name }}" class="file-input file-input-bordered w-full">
+                <input type="file" name="{{ form.image.name }}" accept="image/*" class="file-input file-input-bordered w-full">
             </div>
 
             <div class="form-control mb-6">
-                <label class="label cursor-pointer">
+                <label class="label cursor-pointer justify-start gap-4">
+                    <input type="checkbox" name="{{ form.is_featured.name }}" 
+                        {% if form.is_featured.value %}checked{% endif %} 
+                        class="checkbox checkbox-primary">
                     <span class="label-text">Feature this event</span>
-                    <input type="checkbox" name="{{ form.is_featured.name }}" {% if form.is_featured.value %}checked{%
-                        endif %} class="checkbox">
                 </label>
-                <p class="text-xs text-neutral-content">Featured events will be highlighted on the homepage</p>
+                <p class="text-xs text-base-content/70 ml-12">Featured events will be highlighted on the homepage</p>
             </div>
 
             <div class="flex gap-4 justify-end">
                 <a href="{% url 'events' %}" class="btn btn-outline">Cancel</a>
                 <button type="submit" class="btn btn-primary">
-                    {% if form.instance.pk %}Update{% else %}Create{% endif %} Event
+                    {% if form.instance.pk %}Update Event{% else %}Create Event{% endif %}
                 </button>
             </div>
         </form>
