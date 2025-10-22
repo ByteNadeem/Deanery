@@ -12,6 +12,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
+                // Your custom color palette
                 fern_green: {
                     DEFAULT: '#608351',
                     100: '#131b10',
@@ -36,18 +37,6 @@ module.exports = {
                     800: '#a5bf99',
                     900: '#d2dfcc'
                 },
-                black: {
-                    DEFAULT: '#000000',
-                    100: '#000000',
-                    200: '#000000',
-                    300: '#000000',
-                    400: '#000000',
-                    500: '#000000',
-                    600: '#333333',
-                    700: '#666666',
-                    800: '#999999',
-                    900: '#cccccc'
-                },
                 night: {
                     DEFAULT: '#10150d',
                     100: '#030403',
@@ -71,7 +60,23 @@ module.exports = {
                     700: '#ff3f26',
                     800: '#ff7f6e',
                     900: '#ffbfb7'
+                },
+                // Add pistachio to match DaisyUI secondary
+                pistachio: {
+                    DEFAULT: '#98C880',
+                    100: '#1f2818',
+                    200: '#3d5030',
+                    300: '#5c7848',
+                    400: '#7aa060',
+                    500: '#98C880',
+                    600: '#acd399',
+                    700: '#c1ddb3',
+                    800: '#d6e8cc',
+                    900: '#eaf4e6'
                 }
+            },
+            fontFamily: {
+                sans: ['Arial', 'sans-serif'],
             }
         },
     },
@@ -79,18 +84,51 @@ module.exports = {
         themes: [
             {
                 mytheme: {
-                    primary: "#7DA068",      // asparagus
-                    secondary: "#98C880",    // pistachio
-                    accent: "#880C00",       // dark red
-                    neutral: "#050804",      // black2
-                    "base-100": "#ffffff",
-                    info: "#2D3D26",
-                    success: "#648252",
-                    warning: "#FFD700",
-                    error: "#D41200",
+                    // Primary actions & buttons (using fern_green)
+                    "primary": "#608351",           // fern_green
+                    "primary-content": "#ffffff",   // white text on primary
+
+                    // Secondary elements (using pistachio)
+                    "secondary": "#98C880",         // pistachio
+                    "secondary-content": "#000000", // black text on secondary
+
+                    // Accent/highlights (using penn_red)
+                    "accent": "#941100",            // penn_red
+                    "accent-content": "#ffffff",    // white text on accent
+
+                    // Neutral backgrounds (using night)
+                    "neutral": "#10150d",           // night
+                    "neutral-content": "#ffffff",   // white text on neutral
+
+                    // Base backgrounds (white/light)
+                    "base-100": "#ffffff",          // white
+                    "base-200": "#f5f5f5",          // light gray
+                    "base-300": "#e5e5e5",          // medium gray
+                    "base-content": "#000000",      // black text on base
+
+                    // Semantic colors
+                    "info": "#2d3d26",              // cal_poly_green
+                    "info-content": "#ffffff",
+
+                    "success": "#608351",           // fern_green
+                    "success-content": "#ffffff",
+
+                    "warning": "#FFD700",           // gold
+                    "warning-content": "#000000",
+
+                    "error": "#941100",             // penn_red
+                    "error-content": "#ffffff",
                 },
             },
         ],
+        // Disable other themes to avoid conflicts
+        darkTheme: false,
+        base: true,
+        styled: true,
+        utils: true,
+        prefix: "",
+        logs: true,
+        themeRoot: ":root",
     },
     plugins: [require('daisyui')],
 }
