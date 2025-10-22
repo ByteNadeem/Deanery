@@ -7,10 +7,14 @@ from django.conf import settings
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_protect
-from django.urls import reverse
-from django.views.generic import TemplateView, FormView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import (
+    TemplateView, FormView, ListView, DetailView,
+    CreateView, UpdateView, DeleteView
+)
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 # from requests import request
-from .models import NewsletterSubscriber, Church
+from .models import NewsletterSubscriber, Church, Event
 from .forms import NewsletterSignupForm, ContactForm
 
 
@@ -18,11 +22,25 @@ class HomePage(TemplateView):
     """
     Displays home page"
     """
-    template_name = 'index.html'
+    template_name = 'home/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Add upcoming events (next 3)
+        context['upcoming_events'] = Event.objects.filter(
+            start_time__gte=timezone.now()
+        ).order_by('start_time')[:3]
+
+        # Add featured events
+        context['featured_events'] = Event.objects.filter(
+            is_featured=True, 
+            start_time__gte=timezone.now()
+        )[:2]
+
+        return context
 
 
 def get_client_ip(request):
-
     """Utility function to get client IP address from request"""
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -144,36 +162,6 @@ def newsletter_unsubscribe(request, token):
     })
 
 
-# class ChurchListView(TemplateView):
-#     """Display a list of churches"""
-#     # Placeholder implementation - replace with actual church data retrieval
-
-#     template_name = 'home/churches.html'
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         churches = []
-#         csv_path = os.path.join(
-#             settings.BASE_DIR,
-#             'docs',
-#             'NorthCarnmarthDeaneryLocations.csv'
-#         )
-#         with open(csv_path, 'r') as file:
-#             for line in file.readlines()[1:]:
-#                 parts = line.strip().split(',')
-#                 if len(parts) >= 5:
-#                     churches.append({
-#                         'location': parts[0],
-#                         'name': parts[1],
-#                         'postcode': parts[2],
-#                         'latitude': parts[3],
-#                         'longitude': parts[4],
-#                     })
-
-#         context['churches'] = churches
-#         return context
-
-
 class ContactView(FormView):
     template_name = 'home/contact.html'
     form_class = ContactForm
@@ -212,3 +200,79 @@ class AboutPage(TemplateView):
 def churches(request):
     churches = Church.objects.all()
     return render(request, "home/churches.html", {"churches": churches})
+
+
+# Event Views
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    """Mixin to require staff or superuser access"""
+    def test_func(self):
+        return self.request.user.is_staff or self.request.user.is_superuser
+
+
+class EventListView(ListView):
+    model = Event
+    template_name = 'home/events.html'
+    context_object_name = 'events'
+
+    def get_queryset(self):
+        return Event.objects.filter(start_time__gte=timezone.now()).order_by('start_time')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['featured_events'] = Event.objects.filter(is_featured=True, start_time__gte=timezone.now())
+        context['past_events'] = Event.objects.filter(end_time__lt=timezone.now()).order_by('-start_time')[:5]
+        return context
+
+
+class EventDetailView(DetailView):
+    model = Event
+    template_name = 'home/event_detail.html'
+
+
+class EventCreateView(LoginRequiredMixin, StaffRequiredMixin, CreateView):
+    model = Event
+    template_name = 'home/event_form.html'
+    fields = ['title', 'description', 'location', 'church', 'start_time', 'end_time', 'image', 'is_featured']
+    success_url = reverse_lazy('events')
+
+    def form_valid(self, form):
+        form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+
+class EventUpdateView(LoginRequiredMixin, StaffRequiredMixin, UpdateView):
+    model = Event
+    template_name = 'home/event_form.html'
+    fields = ['title', 'description', 'location', 'church', 'start_time', 'end_time', 'image', 'is_featured']
+    success_url = reverse_lazy('events')
+
+
+class EventDeleteView(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+    model = Event
+    template_name = 'home/event_confirm_delete.html'
+    success_url = reverse_lazy('events')
+
+
+def event_like(request, pk):
+    """Toggle like status for an event"""
+    if not request.user.is_authenticated:
+        return JsonResponse(
+            {'status': 'error', 'message': 'Login required'},
+            status=401
+        )
+
+    event = get_object_or_404(Event, pk=pk)
+
+    if request.user in event.likes.all():
+        event.likes.remove(request.user)
+        liked = False
+    else:
+        event.likes.add(request.user)
+        liked = True
+
+    return JsonResponse({
+        'status': 'success',
+        'liked': liked,
+        'likes': event.like_count
+    })

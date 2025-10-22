@@ -1,9 +1,13 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="container mx-auto py-8">
     <h1 class="text-lg font-bold mb-6 text-center">Contact Your Church</h1>
-    <div class="grid grid-cols-5 grid-rows-4 gap-3">
-        {% for church in churches %}
-        <div class="flip-card max-w-xs w-full mx-auto">
+    <div
+        class="grid sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-5 grid-rows-4 gap-3"
+    >
+        {% for church in churches %} {% comment %}
+        <pre>{{ church }}</pre>
+        {% endcomment %}
+        <div class="flip-card max-w-xs w-full mb-auto">
             <div
                 class="flip-card-inner transition-transform duration-500"
                 onclick="this.classList.toggle('flipped')"
@@ -16,13 +20,21 @@
                     <img
                         src="{{ church.image.url }}"
                         alt="{{ church.name }}"
-                        class="w-full h-24 object-cover rounded-t"
+                        class="w-full h-full object-cover rounded-t"
                     />
+                    {% else %}
+                    <div
+                        class="w-full h-24 bg-gray-200 rounded-t flex items-center justify-center border-gray-300 border-b"
+                    >
+                        <i
+                            class="fa-solid fa-church text-4xl text-gray-400"
+                        ></i>
+                    </div>
                     {% endif %}
                     <h2
-                        class="card-title text-base font-semibold mt-2 text-center"
+                        class="card-title text-base font-semibold mt-4 text-center"
                     >
-                        {{ church.name }}
+                        {{church.name}}
                     </h2>
                 </div>
                 <!-- Back Side -->
@@ -31,17 +43,17 @@
                 >
                     <div>
                         <p class="font-semibold mb-2">
-                            <i class="fa-solid fa-location-dot mr-2"></i>{{
-                            church.address }}
+                            <i class="fa-solid fa-location-dot mr-2"></i
+                            >{{church.address}} {{church.postcode}}
                         </p>
                         <p class="mb-4">
-                            <i class="fa-solid fa-phone mr-2"></i>{{
-                            church.contact }}
+                            <i class="fa-solid fa-phone mr-2"></i
+                            >{{church.contact}}
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-2 justify-center mt-2">
                         <a
-                            href="{{ church.website }}"
+                            href="{{church.website}}"
                             class="btn btn-sm btn-primary"
                             target="_blank"
                             title="Website"
@@ -51,7 +63,7 @@
                             ></i>
                         </a>
                         <a
-                            href="https://www.google.com/maps/search/?api=1&query={{ church.address|urlencode }}"
+                            href="{{church.address}}"
                             class="btn btn-sm btn-info"
                             target="_blank"
                             title="Directions"
@@ -67,13 +79,13 @@
                         </button>
                         <button
                             class="btn btn-sm btn-warning"
-                            onclick="shareChurch('{{ church.name }}', '{{ church.website }}')"
+                            onclick="shareChurch('{{church.name}}', '{{church.website}}')"
                             title="Share"
                         >
                             <i class="fa-solid fa-share-nodes"></i>
                         </button>
                         <a
-                            href="tel:{{ church.contact|cut:' ' }}"
+                            href="tel:{{church.contact|cut:' '}}"
                             class="btn btn-sm btn-accent"
                             title="Call"
                         >

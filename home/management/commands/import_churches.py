@@ -9,9 +9,9 @@ class Command(BaseCommand):
     help = 'Import churches from csv'
 
     def handle(self, *args, **kwargs):
+        Church.objects.all().delete()
         csv_path = os.path.join(
             settings.BASE_DIR,
-            'docs',
             'docs',
             'NorthCarnmarthDeaneryLocations.csv',
         )
@@ -21,16 +21,18 @@ class Command(BaseCommand):
             for row in reader:
                 lat = row.get('Latitude')
                 lon = row.get('Longitude')
-                latitude = float(lat) if lat else None
-                longitude = float(lon) if lon else None
+                latitude = float(lat.strip().rstrip(',')) if lat else None
+                longitude = float(lon.strip().rstrip(',')) if lon else None
                 Church.objects.update_or_create(
                     name=row['Name'],
+                    postcode=row['Postcode'],
                     defaults={
-                        'address': row['Location'],
-                        'postcode': row['Postcode'],
+                        'address': row['Address'],
+                        'contact': row['Contact'],
+                        'contact_email': row['Contact Email'],
+                        'website': row['Website'],
                         'latitude': latitude,
                         'longitude': longitude,
-                        'contact': '',  # Add contact if available in CSV
                     }
                 )
                 count += 1

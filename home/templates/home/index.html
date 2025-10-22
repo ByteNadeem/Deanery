@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero min-h-screen bg-gradient-to-br from-primary to-secondary -mt-20 pt-20">
+    <div class="hero-content text-center text-primary-content">
+        <div class="max-w-4xl">
+            <h1 class="text-5xl font-bold mb-6">Welcome to Our Deanery</h1>
+            <p class="text-xl mb-8">
+                Connecting our church communities across the region. 
+                Join us for worship, fellowship, and service.
+            </p>
+            <div class="flex gap-4 justify-center flex-wrap">
+                <a href="{% url 'events' %}" class="btn btn-accent btn-lg">
+                    <i class="fa-solid fa-calendar-days mr-2"></i>View Events
+                </a>
+                <a href="{% url 'churches' %}" class="btn btn-outline btn-lg">
+                    <i class="fa-solid fa-church mr-2"></i>Find a Church
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Events Calendar Section -->
+<section class="py-16 bg-base-200">
+    <div class="container mx-auto px-4">
+        {% include "home/partials/_events_calendar.html" with upcoming_events=upcoming_events featured_events=featured_events %}
+        
+        <div class="text-center mt-8">
+            <a href="{% url 'events' %}" class="btn btn-primary btn-lg">
+                <i class="fa-solid fa-calendar mr-2"></i>View All Events
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Churches Section -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-bold mb-4">Our Churches</h2>
+            <p class="text-lg text-base-content/70">
+                Explore our vibrant church communities across the deanery
+            </p>
+        </div>
+        
+        <div class="text-center">
+            <a href="{% url 'churches' %}" class="btn btn-outline btn-lg">
+                <i class="fa-solid fa-church mr-2"></i>Explore All Churches
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-16 bg-base-200">
+    <div class="container mx-auto px-4">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-4">Stay Connected</h2>
+            <p class="text-lg mb-8">
+                Subscribe to our newsletter for updates on events, services, and community news
+            </p>
+            
+            <form id="newsletter-form" class="flex flex-col md:flex-row gap-4 justify-center">
+                {% csrf_token %}
+                <input type="text" name="first_name" placeholder="First Name" class="input input-bordered flex-1" required>
+                <input type="text" name="last_name" placeholder="Last Name" class="input input-bordered flex-1" required>
+                <input type="email" name="email" placeholder="Email Address" class="input input-bordered flex-1" required>
+                <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fa-solid fa-envelope mr-2"></i>Subscribe
+                </button>
+            </form>
+            
+            <div id="newsletter-message" class="mt-4"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Newsletter form submission
+    document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const messageDiv = document.getElementById('newsletter-message');
+        
+        fetch('{% url "newsletter_signup" %}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                messageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                this.reset();
+            } else {
+                messageDiv.innerHTML = `<div class="alert alert-error">${data.message}</div>`;
+            }
+        })
+        .catch(error => {
+            messageDiv.innerHTML = '<div class="alert alert-error">An error occurred. Please try again.</div>';
+        });
+    });
+</script>
+{% endblock %}
