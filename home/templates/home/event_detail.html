@@ -1,11 +1,11 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
 <div class="container mx-auto py-8">
     <div class="bg-base-100 shadow-lg rounded-lg overflow-hidden">
         {% if event.image %}
-        <div
-            class="h-64 bg-cover bg-center"
-            style="background-image: url('{{ event.image.url }}')"
-        ></div>
+        <div class="h-64 bg-cover bg-center" style="background-image: url('{{ event.image.url }}')"></div>
         {% endif %}
 
         <div class="p-6">
@@ -50,7 +50,7 @@
             <div class="flex flex-wrap gap-3 mt-6">
                 {% if user.is_authenticated %}
                 <button
-                    class="btn btn-outline like-button {% if user in event.likes.all %}liked{% endif %}"
+                    class="btn btn-outline like-button {% if user in event.likes.all %}btn-error{% endif %}"
                     data-event-id="{{ event.pk }}"
                     data-likes="{{ event.like_count }}"
                 >
@@ -69,26 +69,22 @@
 
                 {% if event.church %}
                 <a href="{% url 'churches' %}" class="btn btn-outline">
-                    <i class="fa-solid fa-church mr-1"></i> Visit Church
+                    <i class="fa-solid fa-church mr-1"></i> View All Churches
                 </a>
-                {% endif %} {% if user.is_staff or user.is_superuser %}
-                <div class="divider"></div>
-                <div class="flex gap-2 mt-2">
-                    <a
-                        href="{% url 'event_edit' event.pk %}"
-                        class="btn btn-warning"
-                    >
-                        <i class="fa-solid fa-edit mr-1"></i> Edit
-                    </a>
-                    <a
-                        href="{% url 'event_delete' event.pk %}"
-                        class="btn btn-error"
-                    >
-                        <i class="fa-solid fa-trash mr-1"></i> Delete
-                    </a>
-                </div>
                 {% endif %}
             </div>
+
+            {% if user.is_staff or user.is_superuser %}
+            <div class="divider"></div>
+            <div class="flex gap-2 mt-2">
+                <a href="{% url 'event_edit' event.pk %}" class="btn btn-warning">
+                    <i class="fa-solid fa-edit mr-1"></i> Edit
+                </a>
+                <a href="{% url 'event_delete' event.pk %}" class="btn btn-error">
+                    <i class="fa-solid fa-trash mr-1"></i> Delete
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
 
@@ -101,69 +97,75 @@
 
 <script>
     function shareEvent(title, url) {
+        const fullUrl = window.location.origin + url;
+        
         if (navigator.share) {
-            navigator
-                .share({
-                    title: title,
-                    url: window.location.origin + url,
-                })
-                .catch(console.error);
+            navigator.share({
+                title: title,
+                url: fullUrl
+            }).catch(err => console.error('Share failed:', err));
         } else {
-            const tempInput = document.createElement("input");
-            document.body.appendChild(tempInput);
-            tempInput.value = window.location.origin + url;
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-            alert("Link copied to clipboard!");
+            navigator.clipboard.writeText(fullUrl).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(err => {
+                // Fallback for older browsers
+                const tempInput = document.createElement('input');
+                document.body.appendChild(tempInput);
+                tempInput.value = fullUrl;
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                alert('Link copied to clipboard!');
+            });
         }
     }
 
     // Event like functionality
-    document.addEventListener("DOMContentLoaded", function () {
-        const likeButtons = document.querySelectorAll(".like-button");
+    document.addEventListener('DOMContentLoaded', function() {
+        const likeButtons = document.querySelectorAll('.like-button');
 
-        likeButtons.forEach((button) => {
-            button.addEventListener("click", function () {
+        likeButtons.forEach(button => {
+            button.addEventListener('click', function() {
                 const eventId = this.dataset.eventId;
 
-                fetch(`/events/${eventId}/like/`, {
-                    method: "POST",
+                fetch(`/home/events/${eventId}/like/`, {  // ← FIXED: Added /home/ prefix
+                    method: 'POST',
                     headers: {
-                        "X-CSRFToken": getCookie("csrftoken"),
-                        "Content-Type": "application/json",
-                    },
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    }
                 })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.status === "success") {
-                            const likeCount = this.querySelector(".like-count");
-                            likeCount.textContent = data.likes;
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const likeCount = this.querySelector('.like-count');
+                        likeCount.textContent = data.likes;
 
-                            if (data.liked) {
-                                this.classList.add("liked");
-                            } else {
-                                this.classList.remove("liked");
-                            }
+                        if (data.liked) {
+                            this.classList.add('btn-error');
                         } else {
-                            alert("Please log in to like events");
+                            this.classList.remove('btn-error');
                         }
-                    })
-                    .catch((error) => console.error("Error:", error));
+                    } else {
+                        alert('Please log in to like events');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
             });
         });
     });
 
     function getCookie(name) {
         let cookieValue = null;
-        if (document.cookie && document.cookie !== "") {
-            const cookies = document.cookie.split(";");
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
             for (let i = 0; i < cookies.length; i++) {
                 const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === name + "=") {
-                    cookieValue = decodeURIComponent(
-                        cookie.substring(name.length + 1)
-                    );
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
                 }
             }

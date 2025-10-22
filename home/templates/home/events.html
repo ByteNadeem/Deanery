@@ -161,7 +161,7 @@
             button.addEventListener("click", function () {
                 const eventId = this.dataset.eventId;
 
-                fetch(`/events/${eventId}/like/`, {
+                fetch(`/home/events/${eventId}/like/`, {
                     method: "POST",
                     headers: {
                         "X-CSRFToken": getCookie("csrftoken"),
