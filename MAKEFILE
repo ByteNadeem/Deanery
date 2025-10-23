@@ -4,15 +4,16 @@
 .PHONY: help django migrate makemigrations collectstatic tw-dev tw-build npm-install clean
 
 help:
-    @echo "Available commands:"
-    @echo "  make django         # Start Django dev server"
-    @echo "  make migrate        # Apply database migrations"
-    @echo "  make makemigrations # Create new migrations"
-    @echo "  make collectstatic  # Collect static files"
-    @echo "  make tw-dev         # Run Tailwind watcher with PostCSS"
-    @echo "  make tw-build       # Build Tailwind CSS once (PostCSS)"
-    @echo "  make npm-install    # Install npm dependencies"
-    @echo "  make clean          # Remove pycache and static build files"
+    @echo "Available commands":
+
+    @echo   "   make    django"         # Start Django dev server
+    @echo   "   make    migrate"        # Apply database migrations
+    @echo   "   make    makemigrations" # Create new migrations
+    @echo   "   make    collectstatic"  # Collect static files
+    @echo   "   make    tw-dev"         # Run Tailwind watcher with PostCSS
+    @echo   "   make    tw-build"       # Build Tailwind CSS once (PostCSS)
+    @echo   "   make    npm-install"    # Install npm dependencies
+    @echo   "   make    clean"          # Remove pycache and static build files
 
 django:
     python manage.py runserver
